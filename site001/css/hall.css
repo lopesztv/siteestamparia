@@ -1,3 +1,4 @@
+```css
 * {
     margin: 0;
     padding: 0;
@@ -6,58 +7,168 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #5b08eb;
+
+    background: linear-gradient(135deg, #5b08eb, #8b3dff);
+
     color: #222;
+    min-height: 100vh;
 }
 
+/* Cabeçalho */
 .cabecalho {
-    background-color: #222;
+    background: rgba(34, 34, 34, 0.95);
+
     color: white;
+
     text-align: center;
+
     padding: 25px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.cabecalho h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.cabecalho p {
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* Área principal */
 .principal {
     width: 90%;
-    max-width: 900px;
+    max-width: 950px;
 
-    margin: 50px auto;
+    margin: 60px auto;
 
     background-color: white;
 
-    padding: 40px;
+    padding: 45px;
 
-    border-radius: 10px;
+    border-radius: 20px;
 
     text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+
+    animation: aparecer 0.5s ease;
 }
 
+/* Título */
 .principal h2 {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+
+    font-size: 28px;
+
+    color: #222;
 }
 
+/* Texto abaixo do título */
+.principal > p {
+    color: #777;
+
+    margin-bottom: 35px;
+
+    font-size: 15px;
+}
+
+/* Área dos botões */
 .opcoes {
     display: flex;
-    gap: 20px;
+
+    gap: 25px;
+
     justify-content: center;
+
     flex-wrap: wrap;
 }
 
+/* Botões */
 .opcoes button {
-    width: 200px;
-    height: 120px;
+    width: 210px;
+    height: 135px;
 
     border: none;
-    border-radius: 10px;
 
-    background-color: #222;
+    border-radius: 16px;
+
+    background: linear-gradient(135deg, #222, #3b3b3b);
+
     color: white;
 
     font-size: 18px;
+    font-weight: bold;
 
     cursor: pointer;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    transition: 0.3s;
 }
 
-.opcoes button:hover {
-    background-color: #444;
+/* Ícone/emoji dentro do botão, se você usar */
+.opcoes button span {
+    display: block;
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
 }
+
+/* Efeito ao passar o mouse */
+.opcoes button:hover {
+    transform: translateY(-6px);
+
+    background: linear-gradient(135deg, #5b08eb, #7625ff);
+
+    box-shadow: 0 12px 25px rgba(91, 8, 235, 0.35);
+}
+
+/* Efeito ao clicar */
+.opcoes button:active {
+    transform: translateY(-2px);
+}
+
+/* Animação */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade para celular */
+@media (max-width: 600px) {
+
+    .principal {
+        width: 92%;
+
+        padding: 30px 20px;
+
+        margin: 30px auto;
+    }
+
+    .principal h2 {
+        font-size: 24px;
+    }
+
+    .opcoes {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+    .opcoes button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+```
