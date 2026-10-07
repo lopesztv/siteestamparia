@@ -11,10 +11,15 @@ body {
     background: linear-gradient(135deg, #5b08eb, #8b3dff);
 
     color: #222;
+
     min-height: 100vh;
 }
 
-/* Cabeçalho */
+
+/* =========================
+   CABEÇALHO
+========================= */
+
 .cabecalho {
     background: rgba(34, 34, 34, 0.95);
 
@@ -29,17 +34,24 @@ body {
 
 .cabecalho h1 {
     font-size: 30px;
+
     margin-bottom: 5px;
 }
 
 .cabecalho p {
     color: #ccc;
+
     font-size: 14px;
 }
 
-/* Área principal */
+
+/* =========================
+   ÁREA PRINCIPAL
+========================= */
+
 .principal {
     width: 90%;
+
     max-width: 950px;
 
     margin: 60px auto;
@@ -57,7 +69,11 @@ body {
     animation: aparecer 0.5s ease;
 }
 
-/* Título */
+
+/* =========================
+   TÍTULO
+========================= */
+
 .principal h2 {
     margin-bottom: 10px;
 
@@ -66,7 +82,9 @@ body {
     color: #222;
 }
 
-/* Texto abaixo do título */
+
+/* TEXTO */
+
 .principal > p {
     color: #777;
 
@@ -75,7 +93,11 @@ body {
     font-size: 15px;
 }
 
-/* Área dos botões */
+
+/* =========================
+   BOTÕES
+========================= */
+
 .opcoes {
     display: flex;
 
@@ -86,9 +108,10 @@ body {
     flex-wrap: wrap;
 }
 
-/* Botões */
+
 .opcoes button {
     width: 210px;
+
     height: 135px;
 
     border: none;
@@ -100,6 +123,7 @@ body {
     color: white;
 
     font-size: 18px;
+
     font-weight: bold;
 
     cursor: pointer;
@@ -109,7 +133,9 @@ body {
     transition: 0.3s;
 }
 
-/* Ícone/emoji dentro do botão, se você usar */
+
+/* Ícone */
+
 .opcoes button span {
     display: block;
 
@@ -118,7 +144,11 @@ body {
     margin-bottom: 10px;
 }
 
-/* Efeito ao passar o mouse */
+
+/* =========================
+   EFEITO DO BOTÃO
+========================= */
+
 .opcoes button:hover {
     transform: translateY(-6px);
 
@@ -127,48 +157,156 @@ body {
     box-shadow: 0 12px 25px rgba(91, 8, 235, 0.35);
 }
 
-/* Efeito ao clicar */
+
 .opcoes button:active {
     transform: translateY(-2px);
 }
 
-/* Animação */
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+
 @keyframes aparecer {
+
     from {
         opacity: 0;
+
         transform: translateY(20px);
     }
 
     to {
         opacity: 1;
+
         transform: translateY(0);
     }
+
 }
 
-/* Responsividade para celular */
+
+/* =========================
+   CELULAR
+========================= */
+
 @media (max-width: 600px) {
 
-    .principal {
-        width: 92%;
-
-        padding: 30px 20px;
-
-        margin: 30px auto;
+    body {
+        font-size: 17px;
     }
+
+
+    /* Cabeçalho */
+
+    .cabecalho {
+        padding: 25px 15px;
+    }
+
+    .cabecalho h1 {
+        font-size: 27px;
+    }
+
+    .cabecalho p {
+        font-size: 16px;
+    }
+
+
+    /* Área principal */
+
+    .principal {
+        width: 96%;
+
+        padding: 35px 20px;
+
+        margin: 25px auto;
+
+        border-radius: 18px;
+    }
+
+
+    /* Título */
 
     .principal h2 {
-        font-size: 24px;
+        font-size: 28px;
+
+        margin-bottom: 12px;
     }
+
+
+    /* Texto */
+
+    .principal > p {
+        font-size: 17px;
+
+        line-height: 1.5;
+
+        margin-bottom: 30px;
+    }
+
+
+    /* Área dos botões */
 
     .opcoes {
         flex-direction: column;
 
         align-items: center;
+
+        gap: 18px;
+
+        width: 100%;
     }
+
+
+    /* Botões */
 
     .opcoes button {
         width: 100%;
-        max-width: 300px;
+
+        max-width: none;
+
+        height: 145px;
+
+        border-radius: 17px;
+
+        font-size: 21px;
     }
+
+
+    /* Ícones */
+
+    .opcoes button span {
+        font-size: 40px;
+
+        margin-bottom: 12px;
+    }
+
+}
+
+
+/* =========================
+   CELULARES MUITO PEQUENOS
+========================= */
+
+@media (max-width: 380px) {
+
+    .principal {
+        width: 94%;
+
+        padding: 30px 15px;
+    }
+
+    .principal h2 {
+        font-size: 25px;
+    }
+
+    .principal > p {
+        font-size: 16px;
+    }
+
+    .opcoes button {
+        height: 135px;
+
+        font-size: 19px;
+    }
+
 }
 ```
