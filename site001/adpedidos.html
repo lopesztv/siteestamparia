@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Adicionar Pedido - Estamparia</title>
+
+    <link rel="stylesheet" href="css/adpedidos.css">
+
+</head>
+
+<body>
+
+
+    <div class="cabecalho">
+
+        <h1>Estamparia</h1>
+
+        <p>Adicionar Pedido</p>
+
+    </div>
+
+
+    <div class="principal">
+
+
+        <div class="formulario">
+
+            <h2>Novo Pedido</h2>
+
+
+            <p>Nome do Serviço</p>
+
+            <input
+                type="text"
+                id="nomeServico"
+                placeholder="Ex: Pedido 001"
+            >
+
+
+            <p>Quantidade de Peças</p>
+
+            <input
+                type="number"
+                id="quantidade"
+                placeholder="Ex: 10"
+            >
+
+
+            <p>Tamanhos</p>
+
+
+            <div class="tamanhos">
+
+
+                <div>
+
+                    <p>P</p>
+
+                    <input
+                        type="number"
+                        id="tamanhoP"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <p>M</p>
+
+                    <input
+                        type="number"
+                        id="tamanhoM"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <p>G</p>
+
+                    <input
+                        type="number"
+                        id="tamanhoG"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <p>GG</p>
+
+                    <input
+                        type="number"
+                        id="tamanhoGG"
+                        value="0"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <p>Cor da Malha</p>
+
+            <input
+                type="text"
+                id="corMalha"
+                placeholder="Ex: Azul Turquesa"
+            >
+
+
+            <p>Arte do Serviço</p>
+
+            <input
+                type="file"
+                id="arte"
+                accept="image/*"
+            >
+
+
+            <p>Data de Entrega</p>
+
+            <input
+                type="date"
+                id="dataEntrega"
+            >
+
+
+            <p>Observações</p>
+
+            <input
+                type="text"
+                id="observacoes"
+                placeholder="Digite as observações"
+            >
+
+
+            <button onclick="criarPedido()">
+
+                Criar Pedido
+
+            </button>
+
+
+            <button
+                class="voltar"
+                onclick="voltarHall()"
+            >
+
+                Voltar para o Hall
+
+            </button>
+
+            <script src="js/adpedidos.js"></script>
+
+
+        </div>
+
+
+        <div class="pedido">
+
+
+            <h2>Especificação do Pedido</h2>
+
+
+            <div id="resultado">
+
+                <p>
+                    Preencha os dados para gerar o pedido.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

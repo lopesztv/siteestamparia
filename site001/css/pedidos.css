@@ -1,0 +1,271 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background-color: #5b08eb;
+
+    color: #222;
+
+}
+
+
+/* CABEÇALHO */
+
+.cabecalho {
+
+    background-color: #222;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 25px;
+
+}
+
+
+.cabecalho h1 {
+
+    margin-bottom: 5px;
+
+}
+
+
+/* ÁREA PRINCIPAL */
+
+.principal {
+
+    width: 90%;
+
+    max-width: 1000px;
+
+    margin: 30px auto;
+
+}
+
+
+/* TOPO */
+
+.topo {
+
+    background-color: white;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+
+.topo h2 {
+
+    margin: 0;
+
+}
+
+
+.topo button {
+
+    background-color: #222;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 20px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+}
+
+
+.topo button:hover {
+
+    background-color: #444;
+
+}
+
+
+/* PEDIDO */
+
+.pedido {
+
+    background-color: white;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+}
+
+
+.pedido h3 {
+
+    margin-bottom: 20px;
+
+    font-size: 22px;
+
+}
+
+
+/* INFORMAÇÕES */
+
+.info {
+
+    margin-bottom: 15px;
+
+}
+
+
+.info strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+}
+
+
+/* TAMANHOS */
+
+.tamanhos {
+
+    display: flex;
+
+    gap: 20px;
+
+}
+
+
+.tamanhos p {
+
+    background-color: #eeeeee;
+
+    padding: 8px 15px;
+
+    border-radius: 5px;
+
+}
+
+
+/* IMAGEM */
+
+.imagem-pedido {
+
+    margin-top: 10px;
+
+}
+
+
+.imagem-pedido img {
+
+    max-width: 300px;
+
+    max-height: 300px;
+
+    border-radius: 8px;
+
+    border: 1px solid #ddd;
+
+}
+
+
+/* OBSERVAÇÕES */
+
+.observacao {
+
+    background-color: #fff3cd;
+
+    padding: 15px;
+
+    margin-top: 15px;
+
+    border-radius: 5px;
+
+}
+
+
+/* BOTÃO EXCLUIR */
+
+.excluir {
+
+    margin-top: 20px;
+
+    padding: 10px 20px;
+
+    background-color: #c62828;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+}
+
+
+.excluir:hover {
+
+    background-color: #a51f1f;
+
+}
+
+
+/* SEM PEDIDOS */
+
+.sem-pedidos {
+
+    background-color: white;
+
+    padding: 40px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+}
+
+
+/* CELULAR */
+
+@media (max-width: 700px) {
+
+    .topo {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        text-align: center;
+
+    }
+
+
+    .tamanhos {
+
+        flex-wrap: wrap;
+
+    }
+
+}
