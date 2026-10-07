@@ -1,48 +1,38 @@
+```javascript
 function criarPedido() {
-
 
     var nomeServico =
         document.getElementById("nomeServico").value;
 
-
     var quantidade =
         document.getElementById("quantidade").value;
-
 
     var tamanhoP =
         document.getElementById("tamanhoP").value;
 
-
     var tamanhoM =
         document.getElementById("tamanhoM").value;
-
 
     var tamanhoG =
         document.getElementById("tamanhoG").value;
 
-
     var tamanhoGG =
         document.getElementById("tamanhoGG").value;
-
 
     var corMalha =
         document.getElementById("corMalha").value;
 
-
     var arte =
         document.getElementById("arte").files[0];
 
-
     var dataEntrega =
         document.getElementById("dataEntrega").value;
-
 
     var observacoes =
         document.getElementById("observacoes").value;
 
 
-
-    /* VERIFICA SE OS CAMPOS PRINCIPAIS FORAM PREENCHIDOS */
+    /* VERIFICA OS CAMPOS OBRIGATÓRIOS */
 
     if (
         nomeServico == "" ||
@@ -54,9 +44,7 @@ function criarPedido() {
         alert("Preencha os campos obrigatórios.");
 
         return;
-
     }
-
 
 
     /* FORMATA A DATA */
@@ -64,12 +52,10 @@ function criarPedido() {
     var partesData =
         dataEntrega.split("-");
 
-
     var dataFormatada =
         partesData[2] + "/" +
         partesData[1] + "/" +
         partesData[0];
-
 
 
     /* CRIA O PEDIDO */
@@ -99,33 +85,25 @@ function criarPedido() {
     };
 
 
-
-    /* SE EXISTIR UMA IMAGEM */
+    /* VERIFICA SE EXISTE UMA IMAGEM */
 
     if (arte) {
-
 
         var leitor =
             new FileReader();
 
-
         leitor.onload = function(event) {
-
 
             pedido.imagem =
                 event.target.result;
-
 
             salvarPedido(pedido);
 
         };
 
-
         leitor.readAsDataURL(arte);
 
-
     } else {
-
 
         salvarPedido(pedido);
 
@@ -135,122 +113,190 @@ function criarPedido() {
 
 
 
-/* SALVAR PEDIDO */
+/* SALVAR PEDIDO NO SHEETSDB */
 
 function salvarPedido(pedido) {
 
+    var dados = {
 
-    var pedidos =
-        JSON.parse(
-            localStorage.getItem("pedidos")
-        ) || [];
+        data: {
 
+            id: Date.now(),
 
-    pedidos.push(pedido);
+            nomeServico: pedido.nomeServico,
 
+            quantidade: pedido.quantidade,
 
-    localStorage.setItem(
-        "pedidos",
-        JSON.stringify(pedidos)
-    );
+            tamanhoP: pedido.tamanhoP,
 
+            tamanhoM: pedido.tamanhoM,
 
+            tamanhoG: pedido.tamanhoG,
 
-    /* MOSTRA A ESPECIFICAÇÃO */
+            tamanhoGG: pedido.tamanhoGG,
 
-    var resultado =
-        document.getElementById("resultado");
+            corMalha: pedido.corMalha,
 
+            dataEntrega: pedido.dataEntrega,
 
-    resultado.innerHTML = `
+            observacoes: pedido.observacoes,
 
-        <div class="info">
+            imagem: pedido.imagem
 
-            <strong>Nome do Serviço:</strong>
+        }
 
-            ${pedido.nomeServico}
-
-        </div>
+    };
 
 
-        <div class="info">
+    fetch(
+        "https://sheetdb.io/api/v1/f2rep5lfrfp1p",
+        {
 
-            <strong>Quantidade:</strong>
+            method: "POST",
 
-            ${pedido.quantidade} peças
+            headers: {
 
-        </div>
+                "Content-Type":
+                    "application/json"
 
+            },
 
-        <div class="info">
+            body:
+                JSON.stringify(dados)
 
-            <strong>Tamanhos:</strong>
+        }
+    )
 
-            <p>P: ${pedido.tamanhoP}</p>
+    .then(function(resposta) {
 
-            <p>M: ${pedido.tamanhoM}</p>
+        if (!resposta.ok) {
 
-            <p>G: ${pedido.tamanhoG}</p>
+            throw new Error(
+                "Erro HTTP: " + resposta.status
+            );
 
-            <p>GG: ${pedido.tamanhoGG}</p>
+        }
 
-        </div>
+        return resposta.json();
 
+    })
 
-        <div class="info">
+    .then(function(resultado) {
 
-            <strong>Cor da Malha:</strong>
-
-            ${pedido.corMalha}
-
-        </div>
-
-
-        <div class="info">
-
-            <strong>Arte do Serviço:</strong>
-
-
-            ${
-                pedido.imagem
-
-                ? `<img src="${pedido.imagem}" width="300">`
-
-                : "Nenhuma imagem selecionada"
-            }
+        console.log(
+            "Pedido salvo no SheetsDB:",
+            resultado
+        );
 
 
-        </div>
+        /* MOSTRA A ESPECIFICAÇÃO */
+
+        var resultadoDiv =
+            document.getElementById("resultado");
 
 
-        <div class="info">
+        resultadoDiv.innerHTML = `
 
-            <strong>Data de Entrega:</strong>
+            <div class="info">
 
-            ${pedido.dataEntrega}
+                <strong>Nome do Serviço:</strong>
 
-        </div>
+                ${pedido.nomeServico}
 
-
-        <div class="observacao">
-
-            <strong>Observações:</strong>
-
-            <p>${pedido.observacoes}</p>
-
-        </div>
-
-    `;
+            </div>
 
 
+            <div class="info">
 
-    /* VOLTA PARA O HALL */
+                <strong>Quantidade:</strong>
 
-    setTimeout(function() {
+                ${pedido.quantidade} peças
 
-        window.location.href = "hall.html";
+            </div>
 
-    }, 3000);
+
+            <div class="info">
+
+                <strong>Tamanhos:</strong>
+
+                <p>P: ${pedido.tamanhoP}</p>
+
+                <p>M: ${pedido.tamanhoM}</p>
+
+                <p>G: ${pedido.tamanhoG}</p>
+
+                <p>GG: ${pedido.tamanhoGG}</p>
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Cor da Malha:</strong>
+
+                ${pedido.corMalha}
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Arte do Serviço:</strong>
+
+                ${
+                    pedido.imagem
+
+                    ? `<img src="${pedido.imagem}" width="300">`
+
+                    : "Nenhuma imagem selecionada"
+                }
+
+            </div>
+
+
+            <div class="info">
+
+                <strong>Data de Entrega:</strong>
+
+                ${pedido.dataEntrega}
+
+            </div>
+
+
+            <div class="observacao">
+
+                <strong>Observações:</strong>
+
+                <p>${pedido.observacoes}</p>
+
+            </div>
+
+        `;
+
+
+        /* VOLTA PARA O HALL */
+
+        setTimeout(function() {
+
+            window.location.href =
+                "hall.html";
+
+        }, 3000);
+
+    })
+
+    .catch(function(erro) {
+
+        console.error(
+            "Erro ao salvar pedido:",
+            erro
+        );
+
+        alert(
+            "Não foi possível salvar o pedido. Verifique o console."
+        );
+
+    });
 
 }
 
@@ -260,6 +306,8 @@ function salvarPedido(pedido) {
 
 function voltarHall() {
 
-    window.location.href = "hall.html";
+    window.location.href =
+        "hall.html";
 
 }
+```
