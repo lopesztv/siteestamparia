@@ -110,22 +110,95 @@ function criarPedido() {
 
 function salvarPedido(pedido) {
 
-    var pedidos =
-        JSON.parse(
-            localStorage.getItem("pedidos")
-        ) || [];
+    var dados = {
+
+        data: [
+
+            {
+                id: pedido.id,
+
+                nomeServico: pedido.nomeServico,
+
+                quantidade: pedido.quantidade,
+
+                tamanhoP: pedido.tamanhoP,
+
+                tamanhoM: pedido.tamanhoM,
+
+                tamanhoG: pedido.tamanhoG,
+
+                tamanhoGG: pedido.tamanhoGG,
+
+                corMalha: pedido.corMalha,
+
+                dataEntrega: pedido.dataEntrega,
+
+                observacoes: pedido.observacoes,
+
+                imagem: pedido.imagem
+            }
+
+        ]
+
+    };
 
 
-    pedidos.push(pedido);
+    fetch(
+        "https://sheetdb.io/api/v1/f2rep5lfrfp1p",
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify(dados)
+
+        }
+    )
+
+    .then(function(resposta) {
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Erro ao salvar o pedido."
+            );
+
+        }
+
+        return resposta.json();
+
+    })
+
+    .then(function(resultado) {
+
+        console.log(
+            "Pedido salvo no SheetsDB:",
+            resultado
+        );
 
 
-    localStorage.setItem(
-        "pedidos",
-        JSON.stringify(pedidos)
-    );
+        mostrarPedido(pedido);
+
+    })
+
+    .catch(function(erro) {
+
+        console.error(
+            "Erro ao salvar:",
+            erro
+        );
 
 
-    mostrarPedido(pedido);
+        alert(
+            "Não foi possível salvar o pedido."
+        );
+
+    });
 
 }
 
