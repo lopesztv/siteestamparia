@@ -1,256 +1,355 @@
+```css
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
 body {
-
     font-family: Arial, sans-serif;
 
-    background-color: #5b08eb;
+    background: linear-gradient(135deg, #5b08eb, #8b3dff);
 
-    color: #222222;
+    color: #222;
+
+    min-height: 100vh;
 }
 
 
-/* CABEÇALHO */
+/* =========================
+   CABEÇALHO
+========================= */
 
 .cabecalho {
-
-    background-color: #222222;
+    background: rgba(34, 34, 34, 0.95);
 
     color: white;
 
     text-align: center;
 
     padding: 25px;
-}
 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
 
 .cabecalho h1 {
-
     margin-bottom: 5px;
 
+    font-size: 30px;
 }
 
 
-/* ÁREA PRINCIPAL */
+/* =========================
+   ÁREA PRINCIPAL
+========================= */
 
 .principal {
-
     width: 90%;
 
-    max-width: 1000px;
+    max-width: 1100px;
 
-    margin: 30px auto;
+    margin: 50px auto;
 
     display: flex;
 
     gap: 30px;
+
+    align-items: flex-start;
 }
 
 
-/* FORMULÁRIO */
+/* =========================
+   FORMULÁRIO
+========================= */
 
 .formulario {
-
     background-color: white;
 
-    padding: 25px;
+    padding: 30px;
 
     width: 50%;
 
-    border-radius: 10px;
-}
+    border-radius: 18px;
 
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+
+    animation: aparecer 0.5s ease;
+}
 
 .formulario h2 {
+    margin-bottom: 25px;
 
-    margin-bottom: 20px;
+    font-size: 25px;
 
+    color: #222;
 }
-
 
 .formulario p {
+    margin-top: 18px;
 
-    margin-top: 15px;
+    margin-bottom: 7px;
 
-    margin-bottom: 5px;
+    font-weight: bold;
 
+    color: #444;
 }
 
 
-/* CAMPOS */
+/* =========================
+   CAMPOS
+========================= */
 
 input {
-
     width: 100%;
 
-    padding: 10px;
+    padding: 13px 14px;
 
-    border: 1px solid #cccccc;
+    border: 1px solid #ddd;
 
-    border-radius: 5px;
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #5b08eb;
+
+    box-shadow: 0 0 0 3px rgba(91, 8, 235, 0.12);
 }
 
 
-/* TAMANHOS */
+/* =========================
+   TAMANHOS
+========================= */
 
 .tamanhos {
-
     display: flex;
 
-    gap: 10px;
+    gap: 12px;
 }
-
 
 .tamanhos div {
-
     width: 25%;
-
 }
-
 
 .tamanhos p {
-
     text-align: center;
 
+    font-size: 14px;
+
+    color: #555;
 }
 
 
-/* BOTÕES */
+/* =========================
+   BOTÕES
+========================= */
 
 button {
-
     width: 100%;
 
     margin-top: 20px;
 
-    padding: 12px;
+    padding: 14px;
 
-    background-color: #222222;
+    background: linear-gradient(135deg, #5b08eb, #7625ff);
 
     color: white;
 
     border: none;
 
-    border-radius: 5px;
+    border-radius: 10px;
 
     cursor: pointer;
-}
 
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+
+    box-shadow: 0 7px 18px rgba(91, 8, 235, 0.2);
+}
 
 button:hover {
+    transform: translateY(-2px);
 
-    background-color: #444444;
-
+    box-shadow: 0 10px 25px rgba(91, 8, 235, 0.35);
 }
 
+button:active {
+    transform: translateY(0);
+}
+
+
+/* BOTÃO VOLTAR */
 
 button.voltar {
+    background: #777;
 
-    background-color: #777777;
+    box-shadow: none;
+}
 
+button.voltar:hover {
+    background: #555;
+
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
 }
 
 
-/* PEDIDO */
+/* =========================
+   PRÉVIA DO PEDIDO
+========================= */
 
 .pedido {
+    background-color: white;
 
-    background-color: rgb(247, 246, 246);
-
-    padding: 25px;
+    padding: 30px;
 
     width: 50%;
 
-    border-radius: 10px;
-}
+    border-radius: 18px;
 
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+
+    animation: aparecer 0.6s ease;
+}
 
 .pedido h2 {
+    margin-bottom: 25px;
 
-    margin-bottom: 20px;
+    font-size: 25px;
 
+    color: #222;
 }
 
 
-/* INFORMAÇÕES */
+/* =========================
+   INFORMAÇÕES
+========================= */
 
 .info {
+    margin-bottom: 20px;
 
-    margin-bottom: 15px;
+    padding-bottom: 15px;
 
+    border-bottom: 1px solid #eee;
 }
-
 
 .info strong {
-
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
+    color: #5b08eb;
+
+    font-size: 14px;
+
+    text-transform: uppercase;
 }
 
-
 .info img {
-
     display: block;
 
-    margin-top: 10px;
+    margin-top: 12px;
 
     max-width: 100%;
 
-    border-radius: 5px;
+    max-height: 250px;
 
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    border: 1px solid #eee;
 }
 
 
-/* OBSERVAÇÕES */
+/* =========================
+   OBSERVAÇÕES
+========================= */
 
 .observacao {
+    background-color: #fff8df;
 
-    background-color: #fff3cd;
+    padding: 18px;
 
-    padding: 15px;
+    margin-top: 20px;
 
-    margin-top: 15px;
+    border-radius: 10px;
 
-    border-radius: 5px;
+    border-left: 4px solid #f0b400;
+
+    color: #5f5000;
+}
+
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+
+@keyframes aparecer {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
 
 }
 
 
-/* CELULAR */
+/* =========================
+   CELULAR
+========================= */
 
 @media (max-width: 700px) {
 
     body {
+        font-size: 16px;
+    }
 
-        font-size: 18px;
-
+    .cabecalho h1 {
+        font-size: 24px;
     }
 
     .principal {
-
         flex-direction: column;
 
-    }
+        width: 92%;
 
+        margin: 30px auto;
+    }
 
     .formulario {
-
         width: 100%;
 
+        padding: 25px;
     }
 
-
     .pedido {
-
         width: 100%;
 
+        padding: 25px;
+    }
+
+    .tamanhos {
+        gap: 8px;
+    }
+
+    .tamanhos div {
+        width: 25%;
     }
 
 }
+```
