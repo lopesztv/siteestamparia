@@ -40,45 +40,50 @@ function carregarPedidos() {
 
             for (var i = 0; i < pedidos.length; i++) {
 
-                var pedido = pedidos[i];
+    var pedido = pedidos[i];
 
 
-                /*
-                    CONVERTE A,B,C...
-                    PARA OS NOMES CORRETOS
-                */
+    // Ignora a linha de cabeçalho da planilha
 
-                if (pedido.A !== undefined) {
-
-                    pedido = {
-
-                        id: pedido.A,
-
-                        nomeServico: pedido.B,
-
-                        quantidade: pedido.C,
-
-                        tamanhoP: pedido.D,
-
-                        tamanhoM: pedido.E,
-
-                        tamanhoG: pedido.F,
-
-                        tamanhoGG: pedido.G,
-
-                        corMalha: pedido.H,
-
-                        dataEntrega: pedido.I,
-
-                        observacoes: pedido.J,
-
-                        imagem: pedido.K
-
-                    };
-
-                }
+    if (
+        pedido.A == "id" ||
+        pedido.B == "nomeServico"
+    ) {
+        continue;
+    }
 
 
+    // Converte A, B, C... para os nomes corretos
+
+    if (pedido.A !== undefined) {
+
+        pedido = {
+
+            id: pedido.A,
+
+            nomeServico: pedido.B,
+
+            quantidade: pedido.C,
+
+            tamanhoP: pedido.D,
+
+            tamanhoM: pedido.E,
+
+            tamanhoG: pedido.F,
+
+            tamanhoGG: pedido.G,
+
+            corMalha: pedido.H,
+
+            dataEntrega: pedido.I,
+
+            observacoes: pedido.J,
+
+            imagem: pedido.K
+
+        };
+
+    }
                 lista.innerHTML += `
 
                     <div class="pedido">
