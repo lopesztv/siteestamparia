@@ -1,4 +1,4 @@
-meu html ja ta assim, mas comfere meu js function criarPedido() {
+function criarPedido() {
 
     var nomeServico =
         document.getElementById("nomeServico").value;
