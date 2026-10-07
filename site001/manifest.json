@@ -2,7 +2,7 @@
     "name": "Sistema de Pedidos",
     "short_name": "Pedidos",
     "description": "Sistema de gerenciamento de pedidos",
-    "start_url": "hall.html",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#5b08eb",
     "theme_color": "#5b08eb",
