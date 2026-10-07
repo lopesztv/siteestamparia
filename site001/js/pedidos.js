@@ -1,74 +1,236 @@
-```javascript
-function salvarPedido(pedido) {
+function carregarPedidos() {
 
-    var resultado =
-        document.getElementById("resultado");
+    var lista =
+        document.getElementById("listaPedidos");
 
-    resultado.innerHTML = `
 
-        <div class="info">
+    fetch("https://sheetdb.io/api/v1/f2rep5lfrfp1p")
 
-            <strong>Pedido criado com sucesso!</strong>
+        .then(function(resposta) {
 
-        </div>
+            if (!resposta.ok) {
 
-        <div class="info">
+                throw new Error(
+                    "Não foi possível buscar os pedidos."
+                );
 
-            <strong>Nome do Serviço:</strong>
+            }
 
-            ${pedido.nomeServico}
+            return resposta.json();
 
-        </div>
+        })
 
-        <div class="info">
+        .then(function(pedidos) {
 
-            <strong>Quantidade:</strong>
+            console.log("Pedidos recebidos:", pedidos);
 
-            ${pedido.quantidade} peças
 
-        </div>
+            if (pedidos.length == 0) {
 
-        <div class="info">
+                lista.innerHTML =
+                    "<p>Nenhum pedido cadastrado.</p>";
 
-            <strong>Tamanhos:</strong>
+                return;
 
-            <p>P: ${pedido.tamanhoP}</p>
-            <p>M: ${pedido.tamanhoM}</p>
-            <p>G: ${pedido.tamanhoG}</p>
-            <p>GG: ${pedido.tamanhoGG}</p>
+            }
 
-        </div>
 
-        <div class="info">
+            lista.innerHTML = "";
 
-            <strong>Cor da Malha:</strong>
 
-            ${pedido.corMalha}
+            for (var i = 0; i < pedidos.length; i++) {
 
-        </div>
+                var pedido = pedidos[i];
 
-        <div class="info">
 
-            <strong>Data de Entrega:</strong>
+                lista.innerHTML += `
 
-            ${pedido.dataEntrega}
+                    <div class="pedido">
 
-        </div>
+                        <h3>
+                            ${pedido.nomeServico}
+                        </h3>
 
-        <div class="observacao">
 
-            <strong>Observações:</strong>
+                        <p>
+                            <strong>Quantidade:</strong>
+                            ${pedido.quantidade} peças
+                        </p>
 
-            <p>${pedido.observacoes}</p>
 
-        </div>
+                        <p>
+                            <strong>Tamanhos:</strong>
 
-    `;
+                            P: ${pedido.tamanhoP} |
+
+                            M: ${pedido.tamanhoM} |
+
+                            G: ${pedido.tamanhoG} |
+
+                            GG: ${pedido.tamanhoGG}
+                        </p>
+
+
+                        <p>
+                            <strong>Cor da Malha:</strong>
+                            ${pedido.corMalha}
+                        </p>
+
+
+                        <p>
+                            <strong>Data de Entrega:</strong>
+                            ${pedido.dataEntrega}
+                        </p>
+
+
+                        <p>
+                            <strong>Observações:</strong>
+                            ${pedido.observacoes}
+                        </p>
+
+
+                        ${
+                            pedido.imagem
+
+                            ? `
+                                <p>
+                                    <strong>
+                                        Arte do Serviço:
+                                    </strong>
+                                </p>
+
+                                <img
+                                    src="${pedido.imagem}"
+                                    width="250"
+                                >
+                              `
+
+                            : `
+                                <p>
+                                    Nenhuma imagem.
+                                </p>
+                              `
+                        }
+
+
+                        <button
+                            onclick="excluirPedido('${pedido.id}')"
+                        >
+                            Excluir Pedido
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+        })
+
+        .catch(function(erro) {
+
+            console.error(
+                "Erro ao carregar pedidos:",
+                erro
+            );
+
+
+            lista.innerHTML = `
+
+                <p>
+                    Não foi possível carregar os pedidos.
+                </p>
+
+            `;
+
+        });
 
 }
-```
 
 
+/*
+    EXCLUIR PEDIDO
+*/
+
+function excluirPedido(id) {
+
+    var confirmar =
+        confirm("Deseja realmente excluir este pedido?");
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+    .then(function(resposta) {
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Não foi possível excluir o pedido."
+            );
+
+        }
+
+        return resposta.json();
+
+    })
+
+    .then(function(resultado) {
+
+        console.log(
+            "Pedido excluído:",
+            resultado
+        );
+
+
+        carregarPedidos();
+
+    })
+
+    .catch(function(erro) {
+
+        console.error(
+            "Erro ao excluir:",
+            erro
+        );
+
+        alert(
+            "Não foi possível excluir o pedido."
+        );
+
+    });
+
+}
+
+
+/*
+    VOLTAR PARA O HALL
+*/
+
+function voltarHall() {
+
+    window.location.href =
+        "hall.html";
+
+}
+
+
+/*
+    CARREGA OS PEDIDOS
+    ASSIM QUE A PÁGINA ABRE
+*/
 
 carregarPedidos();
-```
