@@ -384,18 +384,33 @@ body {
    CELULAR
 ========================= */
 
+```css
 @media (max-width: 700px) {
 
-    .principal {
-        width: 92%;
-
-        margin: 30px auto;
+    body {
+        font-size: 17px;
     }
 
+    /* Área principal */
+    .principal {
+        width: 96%;
+        margin: 20px auto;
+    }
+
+    /* Cabeçalho */
+    .cabecalho {
+        padding: 22px 15px;
+    }
+
+    .cabecalho h1 {
+        font-size: 25px;
+    }
+
+    /* Topo */
     .topo {
         flex-direction: column;
 
-        gap: 18px;
+        gap: 20px;
 
         text-align: center;
 
@@ -403,26 +418,109 @@ body {
     }
 
     .topo h2 {
-        font-size: 23px;
+        font-size: 25px;
     }
 
+    .topo button {
+        width: 100%;
+        padding: 14px;
+
+        font-size: 16px;
+    }
+
+    /* Card do pedido */
     .pedido {
         padding: 25px 20px;
+
+        margin-bottom: 20px;
+
+        border-radius: 15px;
     }
 
     .pedido h3 {
-        font-size: 20px;
+        font-size: 22px;
+
+        margin-bottom: 25px;
     }
 
+    /* Informações */
+    .info {
+        margin-bottom: 22px;
+
+        padding-bottom: 18px;
+    }
+
+    .info strong {
+        font-size: 14px;
+
+        margin-bottom: 8px;
+    }
+
+    /* Tamanhos */
     .tamanhos {
-        gap: 8px;
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .tamanhos p {
+        padding: 12px;
+
+        text-align: center;
+
+        font-size: 16px;
+    }
+
+    /* Imagem */
+    .imagem-pedido {
+        padding: 10px;
     }
 
     .imagem-pedido img {
+        width: 100%;
+
         max-width: 100%;
 
-        max-height: 250px;
+        max-height: 350px;
+
+        object-fit: contain;
     }
 
+    /* Observações */
+    .observacao {
+        padding: 18px;
+
+        font-size: 16px;
+
+        line-height: 1.5;
+    }
+
+    /* Excluir */
+    .excluir {
+        width: 100%;
+
+        padding: 15px;
+
+        font-size: 16px;
+
+        margin-top: 20px;
+    }
+
+    /* Sem pedidos */
+    .sem-pedidos {
+        padding: 45px 20px;
+    }
+
+    .sem-pedidos h2 {
+        font-size: 23px;
+    }
+
+    .sem-pedidos p {
+        font-size: 16px;
+
+        line-height: 1.5;
+    }
 }
 ```
