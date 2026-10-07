@@ -1,267 +1,194 @@
-function criarPedido() {
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
 
-    var nomeServico =
-        document.getElementById("nomeServico").value;
+    <meta charset="UTF-8">
 
+    <title>Adicionar Pedido - Estamparia</title>
 
-    var quantidade =
-        document.getElementById("quantidade").value;
+    <link rel="stylesheet" href="css/adpedidos.css">
 
+</head>
 
-    var tamanhoP =
-        document.getElementById("tamanhoP").value;
+<body>
 
 
-    var tamanhoM =
-        document.getElementById("tamanhoM").value;
+    <div class="cabecalho">
 
+        <h1>Estamparia</h1>
 
-    var tamanhoG =
-        document.getElementById("tamanhoG").value;
+        <p>Adicionar Pedido</p>
 
+    </div>
 
-    var tamanhoGG =
-        document.getElementById("tamanhoGG").value;
 
+    <div class="principal">
 
-    var corMalha =
-        document.getElementById("corMalha").value;
 
+        <div class="formulario">
 
-    var arte =
-        document.getElementById("arte").files[0];
+            <h2>Novo Pedido</h2>
 
 
-    var dataEntrega =
-        document.getElementById("dataEntrega").value;
+            <p>Nome do Serviço</p>
 
+            <input
+                type="text"
+                id="nomeServico"
+                placeholder="Ex: Pedido 001"
+            >
 
-    var observacoes =
-        document.getElementById("observacoes").value;
 
+            <p>Quantidade de Peças</p>
 
+            <input
+                type="number"
+                id="quantidade"
+                placeholder="Ex: 10"
+            >
 
-    /* VERIFICA SE OS CAMPOS PRINCIPAIS FORAM PREENCHIDOS */
 
-    if (
-        nomeServico == "" ||
-        quantidade == "" ||
-        corMalha == "" ||
-        dataEntrega == ""
-    ) {
+            <p>Tamanhos</p>
 
-        alert("Preencha os campos obrigatórios.");
 
-        return;
+            <div class="tamanhos">
 
-    }
 
+                <div>
 
+                    <p>P</p>
 
-    /* FORMATA A DATA */
+                    <input
+                        type="number"
+                        id="tamanhoP"
+                        value="0"
+                    >
 
-    var partesData =
-        dataEntrega.split("-");
+                </div>
 
 
-    var dataFormatada =
-        partesData[2] + "/" +
-        partesData[1] + "/" +
-        partesData[0];
+                <div>
 
+                    <p>M</p>
 
+                    <input
+                        type="number"
+                        id="tamanhoM"
+                        value="0"
+                    >
 
-    /* CRIA O PEDIDO */
+                </div>
 
-    var pedido = {
 
-        nomeServico: nomeServico,
+                <div>
 
-        quantidade: quantidade,
+                    <p>G</p>
 
-        tamanhoP: tamanhoP,
+                    <input
+                        type="number"
+                        id="tamanhoG"
+                        value="0"
+                    >
 
-        tamanhoM: tamanhoM,
+                </div>
 
-        tamanhoG: tamanhoG,
 
-        tamanhoGG: tamanhoGG,
+                <div>
 
-        corMalha: corMalha,
+                    <p>GG</p>
 
-        dataEntrega: dataFormatada,
+                    <input
+                        type="number"
+                        id="tamanhoGG"
+                        value="0"
+                    >
 
-        observacoes: observacoes,
+                </div>
 
-        imagem: ""
 
-    };
+            </div>
 
 
+            <p>Cor da Malha</p>
 
-    /* SE EXISTIR UMA IMAGEM */
+            <input
+                type="text"
+                id="corMalha"
+                placeholder="Ex: Azul Turquesa"
+            >
 
-    if (arte) {
 
+            <p>Arte do Serviço</p>
 
-        var leitor =
-            new FileReader();
+            <input
+                type="file"
+                id="arte"
+                accept="image/*"
+            >
 
 
-        leitor.onload = function(event) {
+            <p>Data de Entrega</p>
 
+            <input
+                type="date"
+                id="dataEntrega"
+            >
 
-            pedido.imagem =
-                event.target.result;
 
+            <p>Observações</p>
 
-            salvarPedido(pedido);
+            <input
+                type="text"
+                id="observacoes"
+                placeholder="Digite as observações"
+            >
 
-        };
 
+            <button onclick="criarPedido()">
 
-        leitor.readAsDataURL(arte);
+                Criar Pedido
 
+            </button>
 
-    } else {
 
+            <button
+                class="voltar"
+                onclick="voltarHall()"
+            >
 
-        salvarPedido(pedido);
+                Voltar para o Hall
 
-    }
+            </button>
 
-}
-
-
-
-/* SALVAR PEDIDO */
-
-function salvarPedido(pedido) {
-
-
-    var pedidos =
-        JSON.parse(
-            localStorage.getItem("pedidos")
-        ) || [];
-
-
-    pedidos.push(pedido);
-
-
-    localStorage.setItem(
-        "pedidos",
-        JSON.stringify(pedidos)
-    );
-
-
-
-    /* MOSTRA A ESPECIFICAÇÃO */
-
-    var resultado =
-        document.getElementById("resultado");
-
-
-    resultado.innerHTML = `
-
-        <div class="info">
-
-            <strong>Nome do Serviço:</strong>
-
-            ${pedido.nomeServico}
-
-        </div>
-
-
-        <div class="info">
-
-            <strong>Quantidade:</strong>
-
-            ${pedido.quantidade} peças
-
-        </div>
-
-
-        <div class="info">
-
-            <strong>Tamanhos:</strong>
-
-            <p>P: ${pedido.tamanhoP}</p>
-
-            <p>M: ${pedido.tamanhoM}</p>
-
-            <p>G: ${pedido.tamanhoG}</p>
-
-            <p>GG: ${pedido.tamanhoGG}</p>
-
-        </div>
-
-
-        <div class="info">
-
-            <strong>Cor da Malha:</strong>
-
-            ${pedido.corMalha}
-
-        </div>
-
-
-        <div class="info">
-
-            <strong>Arte do Serviço:</strong>
-
-
-            ${
-                pedido.imagem
-
-                ? `<img src="${pedido.imagem}" width="300">`
-
-                : "Nenhuma imagem selecionada"
-            }
+            <script src="js/adpedidos.js"></script>
 
 
         </div>
 
 
-        <div class="info">
+        <div class="pedido">
 
-            <strong>Data de Entrega:</strong>
 
-            ${pedido.dataEntrega}
+            <h2>Especificação do Pedido</h2>
+
+
+            <div id="resultado">
+
+                <p>
+                    Preencha os dados para gerar o pedido.
+                </p>
+
+            </div>
+
 
         </div>
 
 
-        <div class="observacao">
+    </div>
 
-            <strong>Observações:</strong>
+</body>
 
-            <p>${pedido.observacoes}</p>
-
-        </div>
-
-    `;
-
-
-
-    /* VOLTA PARA O HALL */
-
-    setTimeout(function() {
-
-        window.location.href = "hall.html";
-
-    }, 3000);
-
-}
-
-
-
-/* BOTÃO VOLTAR */
-
-function voltarHall() {
-
-    window.location.href = "hall.html";
-
-}
+</html>
 
 }
