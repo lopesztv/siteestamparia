@@ -1,82 +1,170 @@
+```javascript
 function carregarPedidos() {
 
-    var pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    fetch("https://sheetdb.io/api/v1/f2rep5lfrfp1p")
 
-    var lista = document.getElementById("listaPedidos");
+        .then(function(resposta) {
 
-    if (pedidos.length == 0) {
-        lista.innerHTML = "<p>Nenhum pedido cadastrado.</p>";
-        return;
-    }
+            return resposta.json();
 
-    lista.innerHTML = "";
+        })
 
-    for (var i = 0; i < pedidos.length; i++) {
+        .then(function(pedidos) {
 
-        var pedido = pedidos[i];
+            var lista =
+                document.getElementById("listaPedidos");
 
-        lista.innerHTML += `
-            <div class="pedido">
 
-                <h3>${pedido.nomeServico}</h3>
+            if (pedidos.length == 0) {
 
-                <p>
-                    <strong>Quantidade:</strong>
-                    ${pedido.quantidade} peças
-                </p>
+                lista.innerHTML =
+                    "<p>Nenhum pedido cadastrado.</p>";
 
-                <p>
-                    <strong>Tamanhos:</strong>
-                    P: ${pedido.tamanhoP} |
-                    M: ${pedido.tamanhoM} |
-                    G: ${pedido.tamanhoG} |
-                    GG: ${pedido.tamanhoGG}
-                </p>
+                return;
 
-                <p>
-                    <strong>Cor da Malha:</strong>
-                    ${pedido.corMalha}
-                </p>
+            }
 
-                <p>
-                    <strong>Data de Entrega:</strong>
-                    ${pedido.dataEntrega}
-                </p>
 
-                <p>
-                    <strong>Observações:</strong>
-                    ${pedido.observacoes}
-                </p>
+            lista.innerHTML = "";
 
-                ${
-                    pedido.imagem
-                    ? `<img src="${pedido.imagem}" width="250">`
-                    : "<p>Nenhuma imagem.</p>"
-                }
 
-                <button onclick="excluirPedido(${i})">
-                    Excluir Pedido
-                </button>
+            for (var i = 0; i < pedidos.length; i++) {
 
-            </div>
-        `;
-    }
+                var pedido = pedidos[i];
+
+
+                lista.innerHTML += `
+
+                    <div class="pedido">
+
+                        <h3>
+                            ${pedido.nomeServico}
+                        </h3>
+
+
+                        <p>
+
+                            <strong>Quantidade:</strong>
+
+                            ${pedido.quantidade} peças
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Tamanhos:</strong>
+
+                            P: ${pedido.tamanhoP} |
+
+                            M: ${pedido.tamanhoM} |
+
+                            G: ${pedido.tamanhoG} |
+
+                            GG: ${pedido.tamanhoGG}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Cor da Malha:</strong>
+
+                            ${pedido.corMalha}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Data de Entrega:</strong>
+
+                            ${pedido.dataEntrega}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>Observações:</strong>
+
+                            ${pedido.observacoes}
+
+                        </p>
+
+
+                        ${
+                            pedido.imagem
+
+                            ? `<img src="${pedido.imagem}" width="250">`
+
+                            : "<p>Nenhuma imagem.</p>"
+                        }
+
+
+                        <button onclick="excluirPedido('${pedido.id}')">
+
+                            Excluir Pedido
+
+                        </button>
+
+
+                    </div>
+
+                `;
+            }
+
+        })
+
+        .catch(function(erro) {
+
+            console.error("Erro ao buscar pedidos:", erro);
+
+            document.getElementById("listaPedidos").innerHTML =
+
+                "<p>Não foi possível carregar os pedidos.</p>";
+
+        });
+
 }
 
 
-function excluirPedido(indice) {
 
-    var pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+function excluirPedido(id) {
 
-    pedidos.splice(indice, 1);
+    fetch(
+        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + id,
+        {
 
-    localStorage.setItem(
-        "pedidos",
-        JSON.stringify(pedidos)
-    );
+            method: "DELETE"
 
-    carregarPedidos();
+        }
+    )
+
+    .then(function(resposta) {
+
+        return resposta.json();
+
+    })
+
+    .then(function(resultado) {
+
+        console.log("Pedido excluído:", resultado);
+
+        carregarPedidos();
+
+    })
+
+    .catch(function(erro) {
+
+        console.error("Erro ao excluir pedido:", erro);
+
+        alert("Não foi possível excluir o pedido.");
+
+    });
+
 }
+
 
 
 function voltarHall() {
@@ -86,4 +174,6 @@ function voltarHall() {
 }
 
 
+
 carregarPedidos();
+```
