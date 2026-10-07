@@ -43,6 +43,42 @@ function carregarPedidos() {
                 var pedido = pedidos[i];
 
 
+                /*
+                    CONVERTE A,B,C...
+                    PARA OS NOMES CORRETOS
+                */
+
+                if (pedido.A !== undefined) {
+
+                    pedido = {
+
+                        id: pedido.A,
+
+                        nomeServico: pedido.B,
+
+                        quantidade: pedido.C,
+
+                        tamanhoP: pedido.D,
+
+                        tamanhoM: pedido.E,
+
+                        tamanhoG: pedido.F,
+
+                        tamanhoGG: pedido.G,
+
+                        corMalha: pedido.H,
+
+                        dataEntrega: pedido.I,
+
+                        observacoes: pedido.J,
+
+                        imagem: pedido.K
+
+                    };
+
+                }
+
+
                 lista.innerHTML += `
 
                     <div class="pedido">
@@ -68,24 +104,31 @@ function carregarPedidos() {
                             G: ${pedido.tamanhoG} |
 
                             GG: ${pedido.tamanhoGG}
+
                         </p>
 
 
                         <p>
                             <strong>Cor da Malha:</strong>
+
                             ${pedido.corMalha}
+
                         </p>
 
 
                         <p>
                             <strong>Data de Entrega:</strong>
+
                             ${pedido.dataEntrega}
+
                         </p>
 
 
                         <p>
                             <strong>Observações:</strong>
+
                             ${pedido.observacoes}
+
                         </p>
 
 
@@ -93,6 +136,7 @@ function carregarPedidos() {
                             pedido.imagem
 
                             ? `
+
                                 <p>
                                     <strong>
                                         Arte do Serviço:
@@ -103,12 +147,15 @@ function carregarPedidos() {
                                     src="${pedido.imagem}"
                                     width="250"
                                 >
+
                               `
 
                             : `
+
                                 <p>
                                     Nenhuma imagem.
                                 </p>
+
                               `
                         }
 
@@ -118,6 +165,7 @@ function carregarPedidos() {
                         >
                             Excluir Pedido
                         </button>
+
 
                     </div>
 
@@ -172,6 +220,7 @@ function excluirPedido(id) {
             method: "DELETE"
 
         }
+
     )
 
     .then(function(resposta) {
@@ -229,8 +278,7 @@ function voltarHall() {
 
 
 /*
-    CARREGA OS PEDIDOS
-    ASSIM QUE A PÁGINA ABRE
+    CARREGAR PEDIDOS
 */
 
 carregarPedidos();
