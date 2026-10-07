@@ -1,35 +1,48 @@
 function criarPedido() {
 
+
     var nomeServico =
         document.getElementById("nomeServico").value;
+
 
     var quantidade =
         document.getElementById("quantidade").value;
 
+
     var tamanhoP =
         document.getElementById("tamanhoP").value;
+
 
     var tamanhoM =
         document.getElementById("tamanhoM").value;
 
+
     var tamanhoG =
         document.getElementById("tamanhoG").value;
+
 
     var tamanhoGG =
         document.getElementById("tamanhoGG").value;
 
+
     var corMalha =
         document.getElementById("corMalha").value;
+
 
     var arte =
         document.getElementById("arte").files[0];
 
+
     var dataEntrega =
         document.getElementById("dataEntrega").value;
+
 
     var observacoes =
         document.getElementById("observacoes").value;
 
+
+
+    /* VERIFICA SE OS CAMPOS PRINCIPAIS FORAM PREENCHIDOS */
 
     if (
         nomeServico == "" ||
@@ -41,8 +54,12 @@ function criarPedido() {
         alert("Preencha os campos obrigatórios.");
 
         return;
+
     }
 
+
+
+    /* FORMATA A DATA */
 
     var partesData =
         dataEntrega.split("-");
@@ -54,9 +71,10 @@ function criarPedido() {
         partesData[0];
 
 
-    var pedido = {
 
-        id: Date.now(),
+    /* CRIA O PEDIDO */
+
+    var pedido = {
 
         nomeServico: nomeServico,
 
@@ -81,7 +99,11 @@ function criarPedido() {
     };
 
 
+
+    /* SE EXISTIR UMA IMAGEM */
+
     if (arte) {
+
 
         var leitor =
             new FileReader();
@@ -89,8 +111,10 @@ function criarPedido() {
 
         leitor.onload = function(event) {
 
+
             pedido.imagem =
                 event.target.result;
+
 
             salvarPedido(pedido);
 
@@ -99,7 +123,9 @@ function criarPedido() {
 
         leitor.readAsDataURL(arte);
 
+
     } else {
+
 
         salvarPedido(pedido);
 
@@ -108,7 +134,11 @@ function criarPedido() {
 }
 
 
+
+/* SALVAR PEDIDO */
+
 function salvarPedido(pedido) {
+
 
     var pedidos =
         JSON.parse(
@@ -125,12 +155,8 @@ function salvarPedido(pedido) {
     );
 
 
-    mostrarPedido(pedido);
 
-}
-
-
-function mostrarPedido(pedido) {
+    /* MOSTRA A ESPECIFICAÇÃO */
 
     var resultado =
         document.getElementById("resultado");
@@ -184,6 +210,7 @@ function mostrarPedido(pedido) {
 
             <strong>Arte do Serviço:</strong>
 
+
             ${
                 pedido.imagem
 
@@ -191,6 +218,7 @@ function mostrarPedido(pedido) {
 
                 : "Nenhuma imagem selecionada"
             }
+
 
         </div>
 
@@ -215,19 +243,25 @@ function mostrarPedido(pedido) {
     `;
 
 
+
+    /* VOLTA PARA O HALL */
+
     setTimeout(function() {
 
-        window.location.href =
-            "hall.html";
+        window.location.href = "hall.html";
 
     }, 3000);
 
 }
 
 
+
+/* BOTÃO VOLTAR */
+
 function voltarHall() {
 
-    window.location.href =
-        "hall.html";
+    window.location.href = "hall.html";
+
+}
 
 }
