@@ -31,6 +31,10 @@ function criarPedido() {
         document.getElementById("observacoes").value;
 
 
+    /* =========================
+       VERIFICAR CAMPOS
+    ========================= */
+
     if (
         nomeServico == "" ||
         quantidade == "" ||
@@ -44,15 +48,44 @@ function criarPedido() {
     }
 
 
+    /* =========================
+       VERIFICAR IMAGEM
+    ========================= */
+
+    if (arte) {
+
+        console.log("Nome da imagem:", arte.name);
+        console.log("Tipo da imagem:", arte.type);
+        console.log("Tamanho:", arte.size);
+
+
+        // Verifica se realmente é uma imagem
+        if (!arte.type.startsWith("image/")) {
+
+            alert("Selecione um arquivo de imagem válido.");
+
+            return;
+        }
+
+    }
+
+
+    /* =========================
+       FORMATAR DATA
+    ========================= */
+
     var partesData =
         dataEntrega.split("-");
-
 
     var dataFormatada =
         partesData[2] + "/" +
         partesData[1] + "/" +
         partesData[0];
 
+
+    /* =========================
+       CRIAR PEDIDO
+    ========================= */
 
     var pedido = {
 
@@ -81,6 +114,10 @@ function criarPedido() {
     };
 
 
+    /* =========================
+       LER IMAGEM
+    ========================= */
+
     if (arte) {
 
         var leitor =
@@ -97,6 +134,15 @@ function criarPedido() {
         };
 
 
+        leitor.onerror = function() {
+
+            alert(
+                "Não foi possível carregar a imagem."
+            );
+
+        };
+
+
         leitor.readAsDataURL(arte);
 
     } else {
@@ -107,6 +153,10 @@ function criarPedido() {
 
 }
 
+
+/* =========================
+   SALVAR PEDIDO
+========================= */
 
 function salvarPedido(pedido) {
 
@@ -203,6 +253,10 @@ function salvarPedido(pedido) {
 }
 
 
+/* =========================
+   MOSTRAR PEDIDO
+========================= */
+
 function mostrarPedido(pedido) {
 
     var resultado =
@@ -288,6 +342,10 @@ function mostrarPedido(pedido) {
     `;
 
 
+    /* =========================
+       VOLTAR PARA O HALL
+    ========================= */
+
     setTimeout(function() {
 
         window.location.href =
@@ -298,9 +356,14 @@ function mostrarPedido(pedido) {
 }
 
 
+/* =========================
+   VOLTAR PARA O HALL
+========================= */
+
 function voltarHall() {
 
     window.location.href =
         "hall.html";
 
 }
+```
