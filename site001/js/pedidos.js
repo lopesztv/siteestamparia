@@ -1,177 +1,72 @@
 ```javascript
-function carregarPedidos() {
+function salvarPedido(pedido) {
 
-    fetch("https://sheetdb.io/api/v1/f2rep5lfrfp1p")
+    var resultado =
+        document.getElementById("resultado");
 
-        .then(function(resposta) {
+    resultado.innerHTML = `
 
-            return resposta.json();
+        <div class="info">
 
-        })
+            <strong>Pedido criado com sucesso!</strong>
 
-        .then(function(pedidos) {
+        </div>
 
-            var lista =
-                document.getElementById("listaPedidos");
+        <div class="info">
 
+            <strong>Nome do Serviço:</strong>
 
-            if (pedidos.length == 0) {
+            ${pedido.nomeServico}
 
-                lista.innerHTML =
-                    "<p>Nenhum pedido cadastrado.</p>";
+        </div>
 
-                return;
+        <div class="info">
 
-            }
+            <strong>Quantidade:</strong>
 
+            ${pedido.quantidade} peças
 
-            lista.innerHTML = "";
+        </div>
 
+        <div class="info">
 
-            for (var i = 0; i < pedidos.length; i++) {
+            <strong>Tamanhos:</strong>
 
-                var pedido = pedidos[i];
+            <p>P: ${pedido.tamanhoP}</p>
+            <p>M: ${pedido.tamanhoM}</p>
+            <p>G: ${pedido.tamanhoG}</p>
+            <p>GG: ${pedido.tamanhoGG}</p>
 
+        </div>
 
-                lista.innerHTML += `
+        <div class="info">
 
-                    <div class="pedido">
+            <strong>Cor da Malha:</strong>
 
-                        <h3>
-                            ${pedido.nomeServico}
-                        </h3>
+            ${pedido.corMalha}
 
+        </div>
 
-                        <p>
+        <div class="info">
 
-                            <strong>Quantidade:</strong>
+            <strong>Data de Entrega:</strong>
 
-                            ${pedido.quantidade} peças
+            ${pedido.dataEntrega}
 
-                        </p>
+        </div>
 
+        <div class="observacao">
 
-                        <p>
+            <strong>Observações:</strong>
 
-                            <strong>Tamanhos:</strong>
+            <p>${pedido.observacoes}</p>
 
-                            P: ${pedido.tamanhoP} |
+        </div>
 
-                            M: ${pedido.tamanhoM} |
-
-                            G: ${pedido.tamanhoG} |
-
-                            GG: ${pedido.tamanhoGG}
-
-                        </p>
-
-
-                        <p>
-
-                            <strong>Cor da Malha:</strong>
-
-                            ${pedido.corMalha}
-
-                        </p>
-
-
-                        <p>
-
-                            <strong>Data de Entrega:</strong>
-
-                            ${pedido.dataEntrega}
-
-                        </p>
-
-
-                        <p>
-
-                            <strong>Observações:</strong>
-
-                            ${pedido.observacoes}
-
-                        </p>
-
-
-                        ${
-                            pedido.imagem
-
-                            ? `<img src="${pedido.imagem}" width="250">`
-
-                            : "<p>Nenhuma imagem.</p>"
-                        }
-
-
-                        <button onclick="excluirPedido('${pedido.id}')">
-
-                            Excluir Pedido
-
-                        </button>
-
-
-                    </div>
-
-                `;
-            }
-
-        })
-
-        .catch(function(erro) {
-
-            console.error("Erro ao buscar pedidos:", erro);
-
-            document.getElementById("listaPedidos").innerHTML =
-
-                "<p>Não foi possível carregar os pedidos.</p>";
-
-        });
+    `;
 
 }
-
-
-
-function excluirPedido(id) {
-
-    fetch(
-        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + id,
-        {
-
-            method: "DELETE"
-
-        }
-    )
-
-    .then(function(resposta) {
-
-        return resposta.json();
-
-    })
-
-    .then(function(resultado) {
-
-        console.log("Pedido excluído:", resultado);
-
-        carregarPedidos();
-
-    })
-
-    .catch(function(erro) {
-
-        console.error("Erro ao excluir pedido:", erro);
-
-        alert("Não foi possível excluir o pedido.");
-
-    });
-
-}
-
-
-
-function voltarHall() {
-
-    window.location.href = "hall.html";
-
-}
+```
 
 
 
