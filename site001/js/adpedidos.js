@@ -31,8 +31,6 @@ function criarPedido() {
         document.getElementById("observacoes").value;
 
 
-    // Verifica os campos obrigatórios
-
     if (
         nomeServico == "" ||
         quantidade == "" ||
@@ -43,14 +41,12 @@ function criarPedido() {
         alert("Preencha os campos obrigatórios.");
 
         return;
-
     }
 
 
-    // Formata a data
-
     var partesData =
         dataEntrega.split("-");
+
 
     var dataFormatada =
         partesData[2] + "/" +
@@ -58,9 +54,9 @@ function criarPedido() {
         partesData[0];
 
 
-    // Cria o pedido
-
     var pedido = {
+
+        id: Date.now(),
 
         nomeServico: nomeServico,
 
@@ -84,8 +80,6 @@ function criarPedido() {
 
     };
 
-
-    // Verifica se foi escolhida uma imagem
 
     if (arte) {
 
@@ -114,107 +108,27 @@ function criarPedido() {
 }
 
 
-/*
-    SALVAR PEDIDO
-*/
-
 function salvarPedido(pedido) {
 
-    var dados = {
-
-        data: {
-
-            id: Date.now(),
-
-            nomeServico: pedido.nomeServico,
-
-            quantidade: pedido.quantidade,
-
-            tamanhoP: pedido.tamanhoP,
-
-            tamanhoM: pedido.tamanhoM,
-
-            tamanhoG: pedido.tamanhoG,
-
-            tamanhoGG: pedido.tamanhoGG,
-
-            corMalha: pedido.corMalha,
-
-            dataEntrega: pedido.dataEntrega,
-
-            observacoes: pedido.observacoes,
-
-            imagem: pedido.imagem
-
-        }
-
-    };
+    var pedidos =
+        JSON.parse(
+            localStorage.getItem("pedidos")
+        ) || [];
 
 
-    fetch(
-        "https://sheetdb.io/api/v1/f2rep5lfrfp1p",
-        {
-
-            method: "POST",
-
-            headers: {
-
-                "Content-Type":
-                    "application/json"
-
-            },
-
-            body:
-                JSON.stringify(dados)
-
-        }
-    )
-
-    .then(function(resposta) {
-
-        if (!resposta.ok) {
-
-            throw new Error(
-                "Erro ao salvar pedido."
-            );
-
-        }
-
-        return resposta.json();
-
-    })
-
-    .then(function(resultado) {
-
-        console.log(
-            "Pedido salvo:",
-            resultado
-        );
+    pedidos.push(pedido);
 
 
-        mostrarPedido(pedido);
+    localStorage.setItem(
+        "pedidos",
+        JSON.stringify(pedidos)
+    );
 
-    })
 
-    .catch(function(erro) {
-
-        console.error(
-            "Erro:",
-            erro
-        );
-
-        alert(
-            "Não foi possível salvar o pedido."
-        );
-
-    });
+    mostrarPedido(pedido);
 
 }
 
-
-/*
-    MOSTRAR PEDIDO
-*/
 
 function mostrarPedido(pedido) {
 
@@ -301,8 +215,6 @@ function mostrarPedido(pedido) {
     `;
 
 
-    // Depois de salvar, volta para o Hall
-
     setTimeout(function() {
 
         window.location.href =
@@ -312,10 +224,6 @@ function mostrarPedido(pedido) {
 
 }
 
-
-/*
-    BOTÃO VOLTAR
-*/
 
 function voltarHall() {
 
