@@ -1,30 +1,14 @@
-function entrar() {
-
-    var usuario = document.getElementById("usuario").value;
-
+function entrar(evento) {
+    if (evento) evento.preventDefault();
+    var usuario = document.getElementById("usuario").value.trim();
     var senha = document.getElementById("senha").value;
+    var mensagem = document.getElementById("mensagem");
 
-
-    if (usuario == "admin" && senha == "1234") {
-
+    // Credenciais mantidas para compatibilidade com o fluxo atual.
+    if (usuario === "admin" && senha === "1234") {
         window.location.href = "hall.html";
-
-    } else {
-
-        document.getElementById("mensagem").innerHTML =
-            "Usuário ou senha incorretos.";
-
+        return;
     }
-
+    mensagem.textContent = "Usuário ou senha incorretos.";
+    document.getElementById("senha").select();
 }
-
-
-document.addEventListener("keydown", function(event) {
-
-    if (event.key == "Enter") {
-
-        entrar();
-
-    }
-
-});

@@ -1,13 +1,17 @@
 (function() {
-    var temaSalvo = localStorage.getItem("temaEstamparia");
-    document.documentElement.setAttribute(
-        "data-tema",
-        temaSalvo === "escuro" ? "escuro" : "claro"
-    );
+    var temaSalvo = "claro";
+    try { temaSalvo = localStorage.getItem("temaEstamparia") === "escuro" ? "escuro" : "claro"; } catch (erro) {}
+    aplicarTema(temaSalvo);
 })();
 
-function definirTema(tema) {
+function aplicarTema(tema) {
     var temaValido = tema === "escuro" ? "escuro" : "claro";
     document.documentElement.setAttribute("data-tema", temaValido);
-    localStorage.setItem("temaEstamparia", temaValido);
+    var metaTema = document.querySelector('meta[name="theme-color"]');
+    if (metaTema) metaTema.setAttribute("content", temaValido === "escuro" ? "#101713" : "#123b32");
+}
+
+function definirTema(tema) {
+    aplicarTema(tema);
+    try { localStorage.setItem("temaEstamparia", tema === "escuro" ? "escuro" : "claro"); } catch (erro) {}
 }

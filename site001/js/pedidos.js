@@ -1,308 +1,43 @@
+var API_PEDIDOS = "https://sheetdb.io/api/v1/f2rep5lfrfp1p";
+function textoSeguro(valor, padrao) {
+    return valor === undefined || valor === null || String(valor).trim() === "" ? (padrao || "—") : String(valor);
+}
+function normalizarPedido(item) {
+    if (item && item.A !== undefined) {
+        if (item.A === "id" || item.B === "nomeServico") return null;
+        return { id:item.A, nomeServico:item.B, quantidade:item.C, tamanhoP:item.D, tamanhoM:item.E, tamanhoG:item.F, tamanhoGG:item.G, corMalha:item.H, dataEntrega:item.I, observacoes:item.J, imagem:item.K };
+    }
+    return item;
+}
+function campoPedido(cartao, titulo, valor) {
+    var p = document.createElement("p"), strong = document.createElement("strong");
+    strong.textContent = titulo + ": "; p.appendChild(strong); p.appendChild(document.createTextNode(textoSeguro(valor))); cartao.appendChild(p);
+}
 function carregarPedidos() {
-
-    var lista =
-        document.getElementById("listaPedidos");
-
-
-    fetch("https://sheetdb.io/api/v1/f2rep5lfrfp1p")
-
-        .then(function(resposta) {
-
-            if (!resposta.ok) {
-
-                throw new Error(
-                    "Não foi possível buscar os pedidos."
-                );
-
-            }
-
-            return resposta.json();
-
-        })
-
-        .then(function(pedidos) {
-
-            console.log("Pedidos recebidos:", pedidos);
-
-
-            if (pedidos.length == 0) {
-
-                lista.innerHTML =
-                    "<p>Nenhum pedido cadastrado.</p>";
-
-                return;
-
-            }
-
-
-            // Os IDs são gerados com Date.now(), então também registram
-            // quando o pedido foi criado. Ordena do mais recente ao antigo.
-            pedidos.sort(function(a, b) {
-                return Number(b.id || b.A || 0) - Number(a.id || a.A || 0);
-            });
-
-            lista.innerHTML = "";
-
-
-            for (var i = 0; i < pedidos.length; i++) {
-
-    var pedido = pedidos[i];
-
-
-    // Ignora a linha de cabeçalho da planilha
-
-    if (
-        pedido.A == "id" ||
-        pedido.B == "nomeServico"
-    ) {
-        continue;
-    }
-
-
-    // Converte A, B, C... para os nomes corretos
-
-    if (pedido.A !== undefined) {
-
-        pedido = {
-
-            id: pedido.A,
-
-            nomeServico: pedido.B,
-
-            quantidade: pedido.C,
-
-            tamanhoP: pedido.D,
-
-            tamanhoM: pedido.E,
-
-            tamanhoG: pedido.F,
-
-            tamanhoGG: pedido.G,
-
-            corMalha: pedido.H,
-
-            dataEntrega: pedido.I,
-
-            observacoes: pedido.J,
-
-            imagem: pedido.K
-
-        };
-
-    }
-
-    var idNumerico = Number(pedido.id);
-    var dataCriacao = "";
-    if (Number.isFinite(idNumerico) && idNumerico > 0) {
-        var data = new Date(idNumerico);
-        dataCriacao = String(data.getDate()).padStart(2, "0") + "/" +
-            String(data.getMonth() + 1).padStart(2, "0");
-    }
-                lista.innerHTML += `
-
-                    <div class="pedido">
-
-                        <h3>
-                            ${pedido.nomeServico}
-                        </h3>
-
-                        <p>
-                            <strong>Pedido feito em:</strong>
-                            ${dataCriacao || "Data não disponível"}
-                        </p>
-
-
-                        <p>
-                            <strong>Quantidade:</strong>
-                            ${pedido.quantidade} peças
-                        </p>
-
-
-                        <p>
-                            <strong>Tamanhos:</strong>
-
-                            P: ${pedido.tamanhoP} |
-
-                            M: ${pedido.tamanhoM} |
-
-                            G: ${pedido.tamanhoG} |
-
-                            GG: ${pedido.tamanhoGG}
-
-                        </p>
-
-
-                        <p>
-                            <strong>Cor da Malha:</strong>
-
-                            ${pedido.corMalha}
-
-                        </p>
-
-
-                        <p>
-                            <strong>Data de Entrega:</strong>
-
-                            ${pedido.dataEntrega}
-
-                        </p>
-
-
-                        <p>
-                            <strong>Observações:</strong>
-
-                            ${pedido.observacoes}
-
-                        </p>
-
-
-                        ${
-                            pedido.imagem
-
-                            ? `
-
-                                <p>
-                                    <strong>
-                                        Arte do Serviço:
-                                    </strong>
-                                </p>
-
-                                <img
-                                    src="${pedido.imagem}"
-                                    width="250"
-                                >
-
-                              `
-
-                            : `
-
-                                <p>
-                                    Nenhuma imagem.
-                                </p>
-
-                              `
-                        }
-
-
-                        <button
-                            onclick="excluirPedido('${pedido.id}')"
-                        >
-                            Excluir Pedido
-                        </button>
-
-
-                    </div>
-
-                `;
-
-            }
-
-        })
-
-        .catch(function(erro) {
-
-            console.error(
-                "Erro ao carregar pedidos:",
-                erro
-            );
-
-
-            lista.innerHTML = `
-
-                <p>
-                    Não foi possível carregar os pedidos.
-                </p>
-
-            `;
-
+    var lista = document.getElementById("listaPedidos");
+    lista.textContent = "Carregando pedidos…";
+    fetch(API_PEDIDOS).then(function(r) { if (!r.ok) throw new Error("Falha ao consultar pedidos (" + r.status + ")."); return r.json(); })
+      .then(function(dados) {
+        if (!Array.isArray(dados)) throw new Error("A resposta recebida não está no formato esperado.");
+        var pedidos = dados.map(normalizarPedido).filter(function(p) { return p && p.id !== undefined; });
+        pedidos.sort(function(a,b) { return Number(b.id) - Number(a.id); });
+        lista.replaceChildren();
+        if (!pedidos.length) { var vazio = document.createElement("p"); vazio.className="sem-pedidos"; vazio.textContent="Nenhum pedido cadastrado ainda."; lista.appendChild(vazio); return; }
+        pedidos.forEach(function(p) {
+            var card=document.createElement("article"), h=document.createElement("h3"); card.className="pedido"; h.textContent=textoSeguro(p.nomeServico,"Pedido sem nome"); card.appendChild(h);
+            var id=Number(p.id); campoPedido(card,"Pedido feito em",Number.isFinite(id) && id>0 ? new Date(id).toLocaleDateString("pt-BR") : "Data não disponível");
+            campoPedido(card,"Quantidade",textoSeguro(p.quantidade)+" peças");
+            campoPedido(card,"Tamanhos","P: "+textoSeguro(p.tamanhoP,"0")+" | M: "+textoSeguro(p.tamanhoM,"0")+" | G: "+textoSeguro(p.tamanhoG,"0")+" | GG: "+textoSeguro(p.tamanhoGG,"0"));
+            campoPedido(card,"Cor da malha",p.corMalha); campoPedido(card,"Data de entrega",p.dataEntrega); campoPedido(card,"Observações",p.observacoes);
+            if (typeof p.imagem === "string" && /^data:image\/(png|jpeg|webp|gif);base64,/i.test(p.imagem)) { var img=document.createElement("img"); img.src=p.imagem; img.alt="Arte do pedido "+textoSeguro(p.nomeServico); img.loading="lazy"; card.appendChild(img); }
+            var btn=document.createElement("button"); btn.type="button"; btn.className="excluir"; btn.textContent="Excluir pedido"; btn.addEventListener("click",function(){ excluirPedido(p.id); }); card.appendChild(btn); lista.appendChild(card);
         });
-
+      }).catch(function(e) { console.error(e); lista.textContent="Não foi possível carregar os pedidos. Verifique sua conexão e tente novamente."; });
 }
-
-
-/*
-    EXCLUIR PEDIDO
-*/
-
 function excluirPedido(id) {
-
-    var confirmar =
-        confirm("Deseja realmente excluir este pedido?");
-
-
-    if (!confirmar) {
-
-        return;
-
-    }
-
-
-    fetch(
-        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + encodeURIComponent(id),
-        {
-
-            method: "DELETE"
-
-        }
-
-    )
-
-    .then(function(resposta) {
-
-        if (!resposta.ok) {
-
-            throw new Error(
-                "Não foi possível excluir o pedido."
-            );
-
-        }
-
-        return resposta.json();
-
-    })
-
-    .then(function(resultado) {
-
-        console.log(
-            "Pedido excluído:",
-            resultado
-        );
-
-
-        carregarPedidos();
-
-    })
-
-    .catch(function(erro) {
-
-        console.error(
-            "Erro ao excluir:",
-            erro
-        );
-
-        alert(
-            "Não foi possível excluir o pedido."
-        );
-
-    });
-
+    if (!confirm("Deseja realmente excluir este pedido?")) return;
+    fetch(API_PEDIDOS+"/id/"+encodeURIComponent(id),{method:"DELETE"}).then(function(r){if(!r.ok) throw new Error("Falha ao excluir pedido ("+r.status+")."); return r.text();})
+      .then(carregarPedidos).catch(function(e){console.error(e);alert("Não foi possível excluir o pedido. Tente novamente.");});
 }
-
-
-/*
-    VOLTAR PARA O HALL
-*/
-
-function voltarHall() {
-
-    window.location.href =
-        "hall.html";
-
-}
-
-
-/*
-    CARREGAR PEDIDOS
-*/
-
+function voltarHall(){ window.location.href="hall.html"; }
 carregarPedidos();
