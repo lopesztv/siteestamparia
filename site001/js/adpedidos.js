@@ -111,35 +111,19 @@ function criarPedido() {
 function salvarPedido(pedido) {
 
     var dados = {
-
-        data: [
-
-            {
-                id: pedido.id,
-
-                nomeServico: pedido.nomeServico,
-
-                quantidade: pedido.quantidade,
-
-                tamanhoP: pedido.tamanhoP,
-
-                tamanhoM: pedido.tamanhoM,
-
-                tamanhoG: pedido.tamanhoG,
-
-                tamanhoGG: pedido.tamanhoGG,
-
-                corMalha: pedido.corMalha,
-
-                dataEntrega: pedido.dataEntrega,
-
-                observacoes: pedido.observacoes,
-
-                imagem: pedido.imagem
-            }
-
-        ]
-
+        data: [{
+            id: String(pedido.id),
+            nomeServico: pedido.nomeServico,
+            quantidade: pedido.quantidade,
+            tamanhoP: pedido.tamanhoP,
+            tamanhoM: pedido.tamanhoM,
+            tamanhoG: pedido.tamanhoG,
+            tamanhoGG: pedido.tamanhoGG,
+            corMalha: pedido.corMalha,
+            dataEntrega: pedido.dataEntrega,
+            observacoes: pedido.observacoes,
+            imagem: pedido.imagem
+        }]
     };
 
 
@@ -162,15 +146,23 @@ function salvarPedido(pedido) {
 
     .then(function(resposta) {
 
-        if (!resposta.ok) {
+        return resposta.text().then(function(texto) {
+            var corpo;
+            try {
+                corpo = texto ? JSON.parse(texto) : {};
+            } catch (erroParse) {
+                corpo = { message: texto };
+            }
 
-            throw new Error(
-                "Erro ao salvar o pedido."
-            );
+            if (!resposta.ok) {
+                throw new Error(
+                    (corpo && (corpo.error || corpo.message)) ||
+                    "SheetDB respondeu com HTTP " + resposta.status
+                );
+            }
 
-        }
-
-        return resposta.json();
+            return corpo;
+        });
 
     })
 
@@ -194,9 +186,7 @@ function salvarPedido(pedido) {
         );
 
 
-        alert(
-            "Não foi possível salvar o pedido."
-        );
+        alert("Não foi possível criar o pedido: " + erro.message);
 
     });
 

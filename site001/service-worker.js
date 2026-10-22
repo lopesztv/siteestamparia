@@ -1,11 +1,13 @@
-const CACHE_NAME = "sistema-pedidos-v1";
+const CACHE_NAME = "sistema-pedidos-v2";
 
 const ARQUIVOS = [
     "index.html",
     "hall.html",
     "adpedidos.html",
     "pedidos.html",
-    "manifest.json"
+    "manifest.json",
+    "css/tema.css",
+    "js/tema.js"
 ];
 
 

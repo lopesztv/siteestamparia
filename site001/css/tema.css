@@ -1,0 +1,60 @@
+/* Tema compartilhado entre todas as telas do sistema. */
+html[data-tema="claro"] body { color:#17211f; background:#f3f6f4; }
+html[data-tema="claro"] .cabecalho { color:#fff; background:#172b26; }
+html[data-tema="claro"] .principal,
+html[data-tema="claro"] .topo,
+html[data-tema="claro"] .pedido,
+html[data-tema="claro"] .sem-pedidos,
+html[data-tema="claro"] .formulario,
+html[data-tema="claro"] .login { color:#17211f; border-color:#e5ebe7; background:#fff; }
+html[data-tema="claro"] .opcoes button { color:#17211f; border-color:#e5ebe7; background:#fff; }
+html[data-tema="claro"] .formulario > p,
+html[data-tema="claro"] .tamanhos p,
+html[data-tema="claro"] .pedido > p,
+html[data-tema="claro"] .info { color:#44514c; }
+html[data-tema="claro"] input,
+html[data-tema="claro"] .login input { color:#17211f; border-color:#d8e1dc; background:#fbfcfb; }
+html[data-tema="claro"] .pedido h3 { border-color:#e5ebe7; }
+html[data-tema="claro"] .pedido > p strong { color:#17211f; }
+html[data-tema="claro"] .observacao { color:#66572f; border-color:#f0e1c0; background:#fffaf0; }
+
+html[data-tema="escuro"] body { color:#f5f3fa; background:#0c0a12; }
+html[data-tema="escuro"] .cabecalho { color:#f5f3fa; background:#100d17; border-bottom:1px solid #292333; }
+html[data-tema="escuro"] .cabecalho p { color:#aaa0bb; }
+html[data-tema="escuro"] .principal,
+html[data-tema="escuro"] .topo,
+html[data-tema="escuro"] .pedido,
+html[data-tema="escuro"] .sem-pedidos,
+html[data-tema="escuro"] .formulario,
+html[data-tema="escuro"] .login { color:#f5f3fa; border-color:#30293d; background:#17141f; }
+html[data-tema="escuro"] .opcoes button { color:#f5f3fa; border-color:#393344; background:#1e1a29; }
+html[data-tema="escuro"] .opcoes button span,
+html[data-tema="escuro"] .tamanhos p,
+html[data-tema="escuro"] .info strong,
+html[data-tema="escuro"] .observacao strong { color:#c4adff; }
+html[data-tema="escuro"] .formulario > p,
+html[data-tema="escuro"] .pedido > p,
+html[data-tema="escuro"] .info { color:#d0cbd7; }
+html[data-tema="escuro"] .pedido > p strong { color:#f5f3fa; }
+html[data-tema="escuro"] input,
+html[data-tema="escuro"] .login input { color:#f5f3fa; border-color:#393344; background:#100e16; }
+html[data-tema="escuro"] input::placeholder { color:#817a8c; }
+html[data-tema="escuro"] .pedido h3,
+html[data-tema="escuro"] .info { border-color:#393344; }
+html[data-tema="escuro"] .observacao { color:#d9c9ff; border-color:#4b3b65; background:#211a30; }
+html[data-tema="escuro"] button.voltar { color:#d1cbd9; border-color:#393344; background:#211c2b; }
+
+.painel-tema[hidden] { display:none; }
+.painel-tema { position:fixed; z-index:20; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,8,12,.62); }
+.painel-tema-conteudo { position:relative; width:min(100%,430px); padding:30px; border:1px solid #e5ebe7; border-radius:18px; color:#17211f; background:#fff; box-shadow:0 20px 60px rgba(0,0,0,.28); }
+.painel-tema-conteudo h2 { margin:0 0 8px; }
+.painel-tema-conteudo p { margin:0 0 18px; color:#6b7773; }
+.escolha-tema { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.escolha-tema button { min-height:52px; margin:0; border:1px solid #e5ebe7; border-radius:10px; color:#17211f; background:#f3f6f4; cursor:pointer; }
+.escolha-tema button:hover { border-color:#147d68; }
+.fechar-tema { position:absolute; top:9px; right:12px; width:36px; min-height:36px; margin:0; padding:0; color:#44514c; background:transparent; font-size:26px; }
+html[data-tema="escuro"] .painel-tema-conteudo { color:#f5f3fa; border-color:#393344; background:#17141f; }
+html[data-tema="escuro"] .painel-tema-conteudo p { color:#aaa4b8; }
+html[data-tema="escuro"] .escolha-tema button { color:#f5f3fa; border-color:#393344; background:#211c2b; }
+html[data-tema="escuro"] .fechar-tema { color:#d1cbd9; }
+@media(max-width:480px) { .escolha-tema { grid-template-columns:1fr; } }

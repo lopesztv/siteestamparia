@@ -12,6 +12,8 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="css/hall.css">
+    <link rel="stylesheet" href="css/tema.css">
+    <script src="js/tema.js"></script>
 
 </head>
 
@@ -47,6 +49,18 @@
             </button>
 
         </div>
+
+        <section id="painelTema" class="painel-tema" role="dialog" aria-modal="true" aria-labelledby="tituloTema" hidden>
+            <div class="painel-tema-conteudo">
+                <button class="fechar-tema" type="button" onclick="fecharConfiguracoes()" aria-label="Fechar configurações">×</button>
+                <h2 id="tituloTema">Configurações</h2>
+                <p>Escolha o tema de cores do site.</p>
+                <div class="escolha-tema" role="group" aria-label="Tema">
+                    <button type="button" onclick="definirTema('claro')">Tema claro</button>
+                    <button type="button" onclick="definirTema('escuro')">Tema escuro</button>
+                </div>
+            </div>
+        </section>
 
     </div>
 

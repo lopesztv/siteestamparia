@@ -35,6 +35,12 @@ function carregarPedidos() {
             }
 
 
+            // Os IDs são gerados com Date.now(), então também registram
+            // quando o pedido foi criado. Ordena do mais recente ao antigo.
+            pedidos.sort(function(a, b) {
+                return Number(b.id || b.A || 0) - Number(a.id || a.A || 0);
+            });
+
             lista.innerHTML = "";
 
 
@@ -84,6 +90,14 @@ function carregarPedidos() {
         };
 
     }
+
+    var idNumerico = Number(pedido.id);
+    var dataCriacao = "";
+    if (Number.isFinite(idNumerico) && idNumerico > 0) {
+        var data = new Date(idNumerico);
+        dataCriacao = String(data.getDate()).padStart(2, "0") + "/" +
+            String(data.getMonth() + 1).padStart(2, "0");
+    }
                 lista.innerHTML += `
 
                     <div class="pedido">
@@ -91,6 +105,11 @@ function carregarPedidos() {
                         <h3>
                             ${pedido.nomeServico}
                         </h3>
+
+                        <p>
+                            <strong>Pedido feito em:</strong>
+                            ${dataCriacao || "Data não disponível"}
+                        </p>
 
 
                         <p>
@@ -219,7 +238,7 @@ function excluirPedido(id) {
 
 
     fetch(
-        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + id,
+        "https://sheetdb.io/api/v1/f2rep5lfrfp1p/id/" + encodeURIComponent(id),
         {
 
             method: "DELETE"
