@@ -1,4 +1,52 @@
 var API_PEDIDOS = "https://sheetdb.io/api/v1/f2rep5lfrfp1p";
+var LIMITE_ARTE_CARACTERES = 42000;
+
+function abrirImagem(arquivo) {
+    return new Promise(function(resolve, reject) {
+        var imagem = new Image();
+        var url = URL.createObjectURL(arquivo);
+        imagem.onload = function() { URL.revokeObjectURL(url); resolve(imagem); };
+        imagem.onerror = function() { URL.revokeObjectURL(url); reject(new Error("Não foi possível abrir esta imagem.")); };
+        imagem.src = url;
+    });
+}
+
+function prepararImagem(arquivo) {
+    return abrirImagem(arquivo).then(function(imagem) {
+        var canvas = document.createElement("canvas");
+        var contexto = canvas.getContext("2d");
+        if (!contexto) throw new Error("Este navegador não conseguiu preparar a imagem.");
+
+        var tamanhos = [1000, 800, 640, 512, 400, 320];
+        var qualidades = [0.76, 0.62, 0.48, 0.36];
+        var melhor = "";
+        for (var i = 0; i < tamanhos.length; i++) {
+            var escala = Math.min(1, tamanhos[i] / Math.max(imagem.naturalWidth, imagem.naturalHeight));
+            canvas.width = Math.max(1, Math.round(imagem.naturalWidth * escala));
+            canvas.height = Math.max(1, Math.round(imagem.naturalHeight * escala));
+            contexto.clearRect(0, 0, canvas.width, canvas.height);
+            contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+
+            for (var j = 0; j < qualidades.length; j++) {
+                var dado = canvas.toDataURL("image/webp", qualidades[j]);
+                if (!dado.startsWith("data:image/webp")) {
+                    contexto.fillStyle = "#ffffff";
+                    contexto.globalCompositeOperation = "destination-over";
+                    contexto.fillRect(0, 0, canvas.width, canvas.height);
+                    contexto.globalCompositeOperation = "source-over";
+                    dado = canvas.toDataURL("image/jpeg", qualidades[j]);
+                }
+                melhor = dado;
+                if (dado.length <= LIMITE_ARTE_CARACTERES) return dado;
+            }
+        }
+        if (melhor.length > LIMITE_ARTE_CARACTERES) {
+            throw new Error("A imagem ainda ficou grande demais para a planilha. Escolha uma imagem mais simples ou menor.");
+        }
+        return melhor;
+    });
+}
+
 function criarPedido() {
     var nome=document.getElementById("nomeServico").value.trim(), quantidade=Number(document.getElementById("quantidade").value), cor=document.getElementById("corMalha").value.trim(), entrega=document.getElementById("dataEntrega").value;
     var arquivo=document.getElementById("arte").files[0], botao=document.getElementById("criarPedido");
@@ -10,7 +58,8 @@ function criarPedido() {
     botao.disabled=true; botao.textContent="Salvando…";
     function enviar(){ salvarPedido(pedido).then(function(){ mostrarPedido(pedido); }).catch(function(e){ alert("Não foi possível criar o pedido: "+e.message); }).finally(function(){botao.disabled=false;botao.textContent="Criar pedido";}); }
     if (!arquivo) { enviar(); return; }
-    var leitor=new FileReader(); leitor.onload=function(e){pedido.imagem=e.target.result;enviar();}; leitor.onerror=function(){botao.disabled=false;botao.textContent="Criar pedido";alert("Não foi possível ler a imagem selecionada.");}; leitor.readAsDataURL(arquivo);
+    botao.textContent="Preparando imagem…";
+    prepararImagem(arquivo).then(function(imagem){pedido.imagem=imagem;botao.textContent="Salvando…";enviar();}).catch(function(e){botao.disabled=false;botao.textContent="Criar pedido";alert(e.message);});
 }
 function salvarPedido(p) {
     return fetch(API_PEDIDOS,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({data:[p]})}).then(function(r){return r.text().then(function(t){var corpo;try{corpo=t?JSON.parse(t):{};}catch(e){corpo={message:t};}if(!r.ok)throw new Error((corpo.error||corpo.message||"Serviço de pedidos indisponível (HTTP "+r.status+")."));return corpo;});});
