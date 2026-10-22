@@ -1,5 +1,5 @@
 var API_PEDIDOS = "https://sheetdb.io/api/v1/f2rep5lfrfp1p";
-var LIMITE_ARTE_CARACTERES = 42000;
+var LIMITE_ARTE_CARACTERES = 38000;
 
 function abrirImagem(arquivo) {
     return new Promise(function(resolve, reject) {
@@ -17,8 +17,8 @@ function prepararImagem(arquivo) {
         var contexto = canvas.getContext("2d");
         if (!contexto) throw new Error("Este navegador não conseguiu preparar a imagem.");
 
-        var tamanhos = [1000, 800, 640, 512, 400, 320];
-        var qualidades = [0.76, 0.62, 0.48, 0.36];
+        var tamanhos = [1000, 800, 640, 512, 400, 320, 256, 192, 128];
+        var qualidades = [0.72, 0.56, 0.4, 0.28, 0.18];
         var melhor = "";
         for (var i = 0; i < tamanhos.length; i++) {
             var escala = Math.min(1, tamanhos[i] / Math.max(imagem.naturalWidth, imagem.naturalHeight));
