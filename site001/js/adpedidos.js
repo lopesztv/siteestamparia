@@ -1,5 +1,5 @@
 var API_PEDIDOS = "https://sheetdb.io/api/v1/f2rep5lfrfp1p";
-var LIMITE_ARTE_CARACTERES = 38000;
+var LIMITE_ARTE_CARACTERES = 20000;
 
 function abrirImagem(arquivo) {
     return new Promise(function(resolve, reject) {
