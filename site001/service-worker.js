@@ -1,4 +1,4 @@
-const CACHE_NAME = "estamparia-shell-v8";
+const CACHE_NAME = "estamparia-shell-v9";
 const SHELL = [
   "./index.html", "./hall.html", "./adpedidos.html", "./pedidos.html", "./offline.html", "./manifest.json",
   "./imagens/icon192.png", "./imagens/icon512.png", "./imagens/apple-touch-icon.png",
