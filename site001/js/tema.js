@@ -8,7 +8,7 @@ function aplicarTema(tema) {
     var temaValido = tema === "escuro" ? "escuro" : "claro";
     document.documentElement.setAttribute("data-tema", temaValido);
     var metaTema = document.querySelector('meta[name="theme-color"]');
-    if (metaTema) metaTema.setAttribute("content", temaValido === "escuro" ? "#101713" : "#123b32");
+    if (metaTema) metaTema.setAttribute("content", temaValido === "escuro" ? "#09070d" : "#f0e7fb");
 }
 
 function definirTema(tema) {

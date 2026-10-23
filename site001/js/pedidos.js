@@ -9,6 +9,20 @@ function normalizarPedido(item) {
     }
     return item;
 }
+function formatarDataEntrega(valor) {
+    if (valor === undefined || valor === null || String(valor).trim() === "") return "—";
+    var texto = String(valor).trim();
+    var iso = texto.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (iso) return iso[3].padStart(2, "0") + "/" + iso[2].padStart(2, "0") + "/" + iso[1];
+    var brasileira = texto.match(/^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})$/);
+    if (brasileira) return brasileira[1].padStart(2, "0") + "/" + brasileira[2].padStart(2, "0") + "/" + brasileira[3];
+    var serial = Number(texto);
+    if (Number.isFinite(serial) && serial > 0 && serial < 100000) {
+        var data = new Date(Date.UTC(1899, 11, 30) + Math.floor(serial) * 86400000);
+        return String(data.getUTCDate()).padStart(2, "0") + "/" + String(data.getUTCMonth() + 1).padStart(2, "0") + "/" + data.getUTCFullYear();
+    }
+    return texto;
+}
 function campoPedido(cartao, titulo, valor) {
     var p = document.createElement("p"), strong = document.createElement("strong");
     strong.textContent = titulo + ": "; p.appendChild(strong); p.appendChild(document.createTextNode(textoSeguro(valor))); cartao.appendChild(p);
@@ -28,7 +42,7 @@ function carregarPedidos() {
             var id=Number(p.id); campoPedido(card,"Pedido feito em",Number.isFinite(id) && id>0 ? new Date(id).toLocaleDateString("pt-BR") : "Data não disponível");
             campoPedido(card,"Quantidade",textoSeguro(p.quantidade)+" peças");
             campoPedido(card,"Tamanhos","P: "+textoSeguro(p.tamanhoP,"0")+" | M: "+textoSeguro(p.tamanhoM,"0")+" | G: "+textoSeguro(p.tamanhoG,"0")+" | GG: "+textoSeguro(p.tamanhoGG,"0"));
-            campoPedido(card,"Cor da malha",p.corMalha); campoPedido(card,"Data de entrega",p.dataEntrega); campoPedido(card,"Observações",p.observacoes);
+            campoPedido(card,"Cor da malha",p.corMalha); campoPedido(card,"Data de entrega",formatarDataEntrega(p.dataEntrega)); campoPedido(card,"Observações",p.observacoes);
             if (typeof p.imagem === "string" && /^data:image\/(png|jpeg|webp|gif);base64,/i.test(p.imagem)) { var img=document.createElement("img"); img.src=p.imagem; img.alt="Arte do pedido "+textoSeguro(p.nomeServico); img.loading="lazy"; card.appendChild(img); }
             var btn=document.createElement("button"); btn.type="button"; btn.className="excluir"; btn.textContent="Excluir pedido"; btn.addEventListener("click",function(){ excluirPedido(p.id); }); card.appendChild(btn); lista.appendChild(card);
         });
