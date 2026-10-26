@@ -17,6 +17,37 @@ function campoPedido(cartao, titulo, valor) {
     var p = document.createElement("p"), strong = document.createElement("strong");
     strong.textContent = titulo + ": "; p.appendChild(strong); p.appendChild(document.createTextNode(textoSeguro(valor))); cartao.appendChild(p);
 }
+function criarBarraStatus(pedido) {
+    var area = document.createElement("div"), rotulo = document.createElement("strong"), grupo = document.createElement("div"), aviso = document.createElement("span");
+    var statusAtual = pedido.status || "TRANQUILO";
+    area.className = "status-pedido";
+    rotulo.className = "status-titulo"; rotulo.textContent = "Situação do pedido";
+    grupo.className = "status-barra"; grupo.setAttribute("role", "group"); grupo.setAttribute("aria-label", "Situação do pedido");
+    aviso.className = "status-aviso"; aviso.setAttribute("aria-live", "polite");
+    ["PRIORIDADE", "TRANQUILO", "ESPERA"].forEach(function(status) {
+        var botao = document.createElement("button");
+        botao.type = "button"; botao.className = "status-opcao status-" + status.toLowerCase(); botao.textContent = status;
+        botao.setAttribute("aria-pressed", statusAtual === status ? "true" : "false");
+        botao.addEventListener("click", function() { salvarStatus(pedido.id, status, grupo, aviso); });
+        grupo.appendChild(botao);
+    });
+    area.appendChild(rotulo); area.appendChild(grupo); area.appendChild(aviso);
+    return area;
+}
+function salvarStatus(id, status, grupo, aviso) {
+    var botoes = Array.prototype.slice.call(grupo.querySelectorAll("button"));
+    var selecionado = botoes.find(function(botao) { return botao.getAttribute("aria-pressed") === "true"; });
+    if (selecionado && selecionado.textContent === status) return;
+    botoes.forEach(function(botao) { botao.disabled = true; });
+    aviso.textContent = "Salvando…";
+    var headers;
+    try { headers = supabaseHeaders(); } catch (e) { aviso.textContent = e.message; botoes.forEach(function(botao) { botao.disabled = false; }); return; }
+    fetch(urlPedidos("?id=eq." + encodeURIComponent(id)), { method: "PATCH", headers: Object.assign({}, headers, { "Prefer": "return=minimal" }), body: JSON.stringify({ status: status }) })
+      .then(function(r) { return r.text().then(function(t) { if (!r.ok) { var body; try { body = t ? JSON.parse(t) : {}; } catch (e) { body = {}; } throw new Error(body.message || "Falha ao atualizar o status (" + r.status + ")."); } }); })
+      .then(function() { botoes.forEach(function(botao) { botao.setAttribute("aria-pressed", botao.textContent === status ? "true" : "false"); }); aviso.textContent = "Salvo"; })
+      .catch(function(e) { console.error(e); aviso.textContent = "Não foi possível salvar."; alert("Não foi possível atualizar o status: " + e.message); })
+      .finally(function() { botoes.forEach(function(botao) { botao.disabled = false; }); });
+}
 function carregarPedidos() {
     var lista = document.getElementById("listaPedidos");
     lista.textContent = "Carregando pedidos…";
@@ -34,6 +65,7 @@ function carregarPedidos() {
             campoPedido(card, "Quantidade", textoSeguro(p.quantidade) + " peças");
             campoPedido(card, "Tamanhos", "P: " + textoSeguro(p.tamanhoP, "0") + " | M: " + textoSeguro(p.tamanhoM, "0") + " | G: " + textoSeguro(p.tamanhoG, "0") + " | GG: " + textoSeguro(p.tamanhoGG, "0"));
             campoPedido(card, "Cor da malha", p.corMalha); campoPedido(card, "Data de entrega", formatarDataEntrega(p.dataEntrega)); campoPedido(card, "Observações", p.observacoes);
+            card.appendChild(criarBarraStatus(p));
             if (typeof p.imagem === "string" && /^data:image\/(png|jpeg|webp|gif);base64,/i.test(p.imagem)) { var img = document.createElement("img"); img.src = p.imagem; img.alt = "Arte do pedido " + textoSeguro(p.nomeServico); img.loading = "lazy"; card.appendChild(img); }
             var btn = document.createElement("button"); btn.type = "button"; btn.className = "excluir"; btn.textContent = "Excluir pedido"; btn.addEventListener("click", function() { excluirPedido(p.id); }); card.appendChild(btn); lista.appendChild(card);
         });

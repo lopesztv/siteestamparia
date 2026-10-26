@@ -11,8 +11,16 @@ create table if not exists public.pedidos (
   "dataEntrega" date not null,
   observacoes text not null default '',
   imagem text not null default '',
+  status text not null default 'TRANQUILO',
   "createdAt" timestamptz not null default now()
 );
+
+alter table public.pedidos add column if not exists status text not null default 'TRANQUILO';
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'pedidos_status_check' and conrelid = 'public.pedidos'::regclass) then
+    alter table public.pedidos add constraint pedidos_status_check check (status in ('PRIORIDADE', 'TRANQUILO', 'ESPERA'));
+  end if;
+end $$;
 
 alter table public.pedidos enable row level security;
 
@@ -22,5 +30,5 @@ drop policy if exists "Acesso publico aos pedidos" on public.pedidos;
 create policy "Acesso publico aos pedidos" on public.pedidos
   for all to anon using (true) with check (true);
 
-grant select, insert, delete on public.pedidos to anon;
+grant select, insert, update, delete on public.pedidos to anon;
 grant usage, select on sequence public.pedidos_id_seq to anon;
