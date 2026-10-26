@@ -1,9 +1,9 @@
-const CACHE_NAME = "estamparia-shell-v9";
+const CACHE_NAME = "estamparia-shell-v10";
 const SHELL = [
   "./index.html", "./hall.html", "./adpedidos.html", "./pedidos.html", "./offline.html", "./manifest.json",
   "./imagens/icon192.png", "./imagens/icon512.png", "./imagens/apple-touch-icon.png",
   "./css/tema.css", "./css/login.css", "./css/hall.css", "./css/adpedidos.css", "./css/pedidos.css",
-  "./js/tema.js", "./js/login.js", "./js/hall.js", "./js/adpedidos.js", "./js/pedidos.js", "./js/pwa.js"
+  "./js/tema.js", "./js/login.js", "./js/hall.js", "./js/supabase-config.js", "./js/adpedidos.js", "./js/pedidos.js", "./js/pwa.js"
 ];
 
 self.addEventListener("install", function(event) {
