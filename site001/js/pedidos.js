@@ -5,6 +5,22 @@ function supabaseHeaders() {
     return { "apikey": window.SUPABASE_ANON_KEY, "Authorization": "Bearer " + window.SUPABASE_ANON_KEY, "Content-Type": "application/json" };
 }
 function urlPedidos(query) { return window.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/pedidos" + (query || ""); }
+function valorMes(date) { return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0"); }
+function inicializarFiltroMes() {
+    var campo = document.getElementById("filtroMes");
+    campo.value = valorMes(new Date());
+    campo.addEventListener("change", carregarPedidos);
+    document.getElementById("mesAnterior").addEventListener("click", function() { alterarMes(-1); });
+    document.getElementById("mesProximo").addEventListener("click", function() { alterarMes(1); });
+}
+function alterarMes(deslocamento) {
+    var campo = document.getElementById("filtroMes");
+    if (!/^\d{4}-\d{2}$/.test(campo.value)) campo.value = valorMes(new Date());
+    var partes = campo.value.split("-");
+    var data = new Date(Number(partes[0]), Number(partes[1]) - 1 + deslocamento, 1);
+    campo.value = valorMes(data);
+    carregarPedidos();
+}
 function textoSeguro(valor, padrao) {
     return valor === undefined || valor === null || String(valor).trim() === "" ? (padrao || "—") : String(valor);
 }
@@ -49,16 +65,27 @@ function salvarStatus(id, status, grupo, aviso) {
       .finally(function() { botoes.forEach(function(botao) { botao.disabled = false; }); });
 }
 function carregarPedidos() {
+    var campoMes = document.getElementById("filtroMes");
+    if (!/^\d{4}-\d{2}$/.test(campoMes.value)) campoMes.value = valorMes(new Date());
+    var partesMes = campoMes.value.split("-");
+    var inicioMes = new Date(Number(partesMes[0]), Number(partesMes[1]) - 1, 1);
+    var inicioProximoMes = new Date(Number(partesMes[0]), Number(partesMes[1]), 1);
+    var nomeMes = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(inicioMes);
+    document.getElementById("mesSelecionado").textContent = "Pedidos de " + nomeMes;
     var lista = document.getElementById("listaPedidos");
     lista.textContent = "Carregando pedidos…";
     var headers;
     try { headers = supabaseHeaders(); } catch (e) { lista.textContent = e.message; return; }
-    fetch(urlPedidos("?select=*&order=id.desc"), { headers: headers })
+    var parametros = new URLSearchParams();
+    parametros.set("select", "*");
+    parametros.set("and", "(createdAt.gte." + inicioMes.toISOString() + ",createdAt.lt." + inicioProximoMes.toISOString() + ")");
+    parametros.set("order", "id.desc");
+    fetch(urlPedidos("?" + parametros.toString()), { headers: headers })
       .then(function(r) { return r.json().then(function(body) { if (!r.ok) throw new Error(body.message || "Falha ao consultar pedidos (" + r.status + ")."); return body; }); })
       .then(function(pedidos) {
         if (!Array.isArray(pedidos)) throw new Error("A resposta recebida não está no formato esperado.");
         lista.replaceChildren();
-        if (!pedidos.length) { var vazio = document.createElement("p"); vazio.className = "sem-pedidos"; vazio.textContent = "Nenhum pedido cadastrado ainda."; lista.appendChild(vazio); return; }
+        if (!pedidos.length) { var vazio = document.createElement("p"); vazio.className = "sem-pedidos"; vazio.textContent = "Nenhum pedido cadastrado neste mês."; lista.appendChild(vazio); return; }
         pedidos.forEach(function(p) {
             var card = document.createElement("article"), h = document.createElement("h3"); card.className = "pedido"; h.textContent = textoSeguro(p.nomeServico, "Pedido sem nome"); card.appendChild(h);
             campoPedido(card, "Pedido feito em", p.createdAt ? new Date(p.createdAt).toLocaleDateString("pt-BR") : "Data não disponível");
@@ -80,4 +107,5 @@ function excluirPedido(id) {
       .then(carregarPedidos).catch(function(e) { console.error(e); alert("Não foi possível excluir o pedido: " + e.message); });
 }
 function voltarHall() { window.location.href = "hall.html"; }
+inicializarFiltroMes();
 carregarPedidos();
