@@ -33,6 +33,41 @@ function campoPedido(cartao, titulo, valor) {
     var p = document.createElement("p"), strong = document.createElement("strong");
     strong.textContent = titulo + ": "; p.appendChild(strong); p.appendChild(document.createTextNode(textoSeguro(valor))); cartao.appendChild(p);
 }
+function abrirImagemPedido(src, descricao, origem) {
+    var visualizador = document.getElementById("visualizadorImagem");
+    if (!visualizador) {
+        visualizador = document.createElement("div");
+        visualizador.id = "visualizadorImagem";
+        visualizador.className = "visualizador-imagem";
+        visualizador.setAttribute("role", "dialog");
+        visualizador.setAttribute("aria-modal", "true");
+        visualizador.setAttribute("aria-label", "Imagem ampliada do pedido");
+        visualizador.hidden = true;
+        var fechar = document.createElement("button");
+        fechar.type = "button"; fechar.className = "fechar-visualizador"; fechar.textContent = "×"; fechar.setAttribute("aria-label", "Fechar imagem");
+        var imagem = document.createElement("img"); imagem.id = "imagemAmpliada";
+        visualizador.appendChild(fechar); visualizador.appendChild(imagem); document.body.appendChild(visualizador);
+        fechar.addEventListener("click", fecharImagemPedido);
+        visualizador.addEventListener("click", function(evento) { if (evento.target === visualizador) fecharImagemPedido(); });
+        document.addEventListener("keydown", function(evento) {
+            if (visualizador.hidden) return;
+            if (evento.key === "Escape") fecharImagemPedido();
+            if (evento.key === "Tab") { evento.preventDefault(); fechar.focus(); }
+        });
+    }
+    window.imagemPedidoFocoAnterior = origem;
+    var ampliada = document.getElementById("imagemAmpliada");
+    ampliada.src = src; ampliada.alt = descricao;
+    visualizador.hidden = false;
+    visualizador.querySelector("button").focus();
+}
+function fecharImagemPedido() {
+    var visualizador = document.getElementById("visualizadorImagem");
+    if (!visualizador || visualizador.hidden) return;
+    visualizador.hidden = true;
+    document.getElementById("imagemAmpliada").removeAttribute("src");
+    if (window.imagemPedidoFocoAnterior) window.imagemPedidoFocoAnterior.focus();
+}
 function criarBarraStatus(pedido) {
     var area = document.createElement("div"), rotulo = document.createElement("strong"), grupo = document.createElement("div"), aviso = document.createElement("span");
     var statusAtual = pedido.status || "TRANQUILO";
@@ -93,7 +128,7 @@ function carregarPedidos() {
             campoPedido(card, "Tamanhos", "P: " + textoSeguro(p.tamanhoP, "0") + " | M: " + textoSeguro(p.tamanhoM, "0") + " | G: " + textoSeguro(p.tamanhoG, "0") + " | GG: " + textoSeguro(p.tamanhoGG, "0"));
             campoPedido(card, "Cor da malha", p.corMalha); campoPedido(card, "Data de entrega", formatarDataEntrega(p.dataEntrega)); campoPedido(card, "Observações", p.observacoes);
             card.appendChild(criarBarraStatus(p));
-            if (typeof p.imagem === "string" && /^data:image\/(png|jpeg|webp|gif);base64,/i.test(p.imagem)) { var img = document.createElement("img"); img.src = p.imagem; img.alt = "Arte do pedido " + textoSeguro(p.nomeServico); img.loading = "lazy"; card.appendChild(img); }
+            if (typeof p.imagem === "string" && /^data:image\/(png|jpeg|webp|gif);base64,/i.test(p.imagem)) { var img = document.createElement("img"); img.src = p.imagem; img.alt = "Arte do pedido " + textoSeguro(p.nomeServico); img.loading = "lazy"; img.className = "imagem-ampliavel"; img.tabIndex = 0; img.setAttribute("role", "button"); img.setAttribute("aria-label", "Ampliar arte do pedido " + textoSeguro(p.nomeServico)); img.addEventListener("click", function() { abrirImagemPedido(img.src, img.alt, img); }); img.addEventListener("keydown", function(evento) { if (evento.key === "Enter" || evento.key === " ") { evento.preventDefault(); abrirImagemPedido(img.src, img.alt, img); } }); card.appendChild(img); }
             var btn = document.createElement("button"); btn.type = "button"; btn.className = "excluir"; btn.textContent = "Excluir pedido"; btn.addEventListener("click", function() { excluirPedido(p.id); }); card.appendChild(btn); lista.appendChild(card);
         });
       }).catch(function(e) { console.error(e); lista.textContent = "Não foi possível carregar os pedidos. " + e.message; });
