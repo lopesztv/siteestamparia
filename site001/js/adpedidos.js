@@ -1,5 +1,6 @@
 function urlPedidos() { if (!window.SUPABASE_URL || window.SUPABASE_URL.indexOf("SEU-PROJETO") !== -1 || !window.SUPABASE_ANON_KEY || window.SUPABASE_ANON_KEY.indexOf("SUA_CHAVE") !== -1) throw new Error("Configure a URL e a chave anon do Supabase em js/supabase-config.js."); return window.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/pedidos"; }
-var LIMITE_ARTE_CARACTERES = 20000;
+var LIMITE_ARTE_CARACTERES = 1000000;
+var LIMITE_ARQUIVO_BYTES = 5 * 1024 * 1024;
 
 function abrirImagem(arquivo) {
     return new Promise(function(resolve, reject) {
@@ -52,7 +53,7 @@ function criarPedido() {
     var arquivo=document.getElementById("arte").files[0], botao=document.getElementById("criarPedido");
     if (!nome || !cor || !entrega || !Number.isInteger(quantidade) || quantidade<1) { alert("Informe o nome do serviço, a quantidade (número inteiro maior que zero), a cor e a data de entrega."); return; }
     if (arquivo && !/^image\//i.test(arquivo.type)) { alert("Selecione um arquivo de imagem válido."); return; }
-    if (arquivo && arquivo.size>2*1024*1024) { alert("A imagem deve ter no máximo 2 MB para envio."); return; }
+    if (arquivo && arquivo.size>LIMITE_ARQUIVO_BYTES) { alert("A imagem deve ter no máximo 5 MB para envio."); return; }
     var partes=entrega.split("-");
     var pedido={nomeServico:nome,quantidade:quantidade,tamanhoP:Number(document.getElementById("tamanhoP").value||0),tamanhoM:Number(document.getElementById("tamanhoM").value||0),tamanhoG:Number(document.getElementById("tamanhoG").value||0),tamanhoGG:Number(document.getElementById("tamanhoGG").value||0),corMalha:cor,dataEntrega:entrega,observacoes:document.getElementById("observacoes").value.trim(),imagem:""};
     botao.disabled=true; botao.textContent="Salvando…";
