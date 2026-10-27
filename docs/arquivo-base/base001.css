@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #5b08ebf1;
+    color: #222222;
+}
+
+
+/* CABEÇALHO */
+
+.cabecalho {
+    background-color: #222222;
+    color: rgb(241, 241, 245);
+    text-align: center;
+    padding: 25px;
+}
+
+
+.cabecalho h1 {
+    margin-bottom: 5px;
+}
+
+
+/* ÁREA PRINCIPAL */
+
+.principal {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+
+    display: flex;
+    gap: 30px;
+}
+
+
+/* FORMULÁRIO */
+
+.formulario {
+    background-color: white;
+    padding: 25px;
+    width: 50%;
+    border-radius: 10px;
+}
+
+
+.formulario h2 {
+    margin-bottom: 20px;
+}
+
+
+.formulario p {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+
+/* CAMPOS */
+
+input {
+    width: 100%;
+    padding: 10px;
+
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+}
+
+
+/* TAMANHOS */
+
+.tamanhos {
+    display: flex;
+    gap: 10px;
+}
+
+
+.tamanhos div {
+    width: 25%;
+}
+
+
+.tamanhos p {
+    text-align: center;
+}
+
+
+/* BOTÃO */
+
+button {
+    width: 100%;
+
+    margin-top: 20px;
+    padding: 12px;
+
+    background-color: #222222;
+    color: white;
+
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+
+button:hover {
+    background-color: #444444;
+}
+
+
+/* PEDIDO */
+
+.pedido {
+    background-color: rgb(247, 246, 246);
+    padding: 25px;
+    width: 50%;
+    border-radius: 10px;
+}
+
+
+.pedido h2 {
+    margin-bottom: 20px;
+}
+
+
+/* INFORMAÇÕES DO PEDIDO */
+
+.info {
+    margin-bottom: 15px;
+}
+
+
+.info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+/* OBSERVAÇÕES */
+
+.observacao {
+    background-color: #fff3cd;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+
+/* CELULAR */
+
+@media (max-width: 700px) {
+
+    .principal {
+        flex-direction: column;
+    }
+
+    .formulario {
+        width: 100%;
+    }
+
+    .pedido {
+        width: 100%;
+    }
+
+}

@@ -1,9 +1,17 @@
-# siteestamparia
+﻿# Estamparia
+
+Aplicação web para registrar e acompanhar pedidos de produção.
+
+## Estrutura
+
+- `site001/`: aplicação publicada, páginas, estilos, scripts, imagens e arquivos PWA.
+- `database/supabase.sql`: estrutura e políticas do banco Supabase atual.
+- `docs/`: lógica do projeto e arquivos de referência da versão inicial.
 
 ## Configurar o banco Supabase
 
 1. Crie um projeto no Supabase.
-2. Abra `supabase.sql` no SQL Editor do projeto e execute o script.
+2. Abra `database/supabase.sql` no SQL Editor do projeto e execute o script.
 3. Em `site001/js/supabase-config.js`, preencha `SUPABASE_URL` e `SUPABASE_ANON_KEY` com os valores de **Project Settings > API**. Use somente a chave pública `anon`/publishable no site. Nunca coloque `service_role` no JavaScript.
 4. Publique os arquivos da pasta `site001` em um servidor HTTPS e atualize/reabra o site para o service worker baixar a versão nova.
 

@@ -1,0 +1,83 @@
+(Especificações e Pedidos)
+
+INTUITO: Criar um app, onde a pessoa que realizar o orçamento, possa inserir, quantidade e tamanhos, cor de malha, data de entrega, arte do serviço. Para facilitar o acesso dos funcionários que iram realizar o serviço. Com as especificações inseridas, os funcionários terão acesso somente a especificação pronta
+
+LOGICA:
+Nome do Serviço: Pedido 001
+Quantidade de Peças: 10
+Tamanho P:2
+Tamanho M:5 
+Tamanho G:3
+Cor da Malha: Azul Turquesa
+Arte do Serviço:
+Data de Entrega:10/10 
+Observações: Cliente exigente com a cor da arte aprovada, favor prestar ATENÇÃO, caso haja duvida, confirmar com o Eduardo
+
+CAMINHO DO SITE:                
+
+                INTERNET
+                    │
+                    ▼
+              ┌───────────┐
+              │    SITE      │
+              └─────┬─────┘
+                      │
+          ┌────────┴─────────┐
+          │                       │
+      ORÇAMENTO                PRODUÇÃO
+          │                        │
+         └─────────┬─────────┘
+                       │
+                       ▼
+                BANCO DE DADOS
+
+1️⃣ Agora
+
+HTML
+CSS
+JavaScript
+Criar pedido
+
+2️⃣ Próximo
+
+Lista de pedidos
+Editar pedido
+Excluir pedido
+Gerar número automaticamente
+
+3️⃣ Depois
+
+localStorage
+Aprender a salvar dados
+
+4️⃣ Depois
+
+Banco de dados
+Login
+Site online
+Funcionários acessando de outros computadores
+
+5️⃣ Finalmente
+
+Sistema completo da sua estamparia
+
+🗺️ Seu caminho de aprendizagem
+Etapa	O que aprender	Resultado
+1	HTML	Estrutura das páginas
+2	CSS	Visual e responsividade
+3	JavaScript básico	Lógica
+4	DOM + eventos	Site interativo
+5	JavaScript avançado	Código mais profissional
+6	APIs + JSON + Fetch	Site conversando com servidores
+7	Git + GitHub	Versionamento e publicação
+8	Node.js	JavaScript no servidor
+9	Express	Criar backend/API
+10	Banco de dados + SQL	Salvar informações
+11	Autenticação	Login/cadastro
+12	Segurança	Proteger sistema
+13	Deploy	Colocar tudo na internet
+14	Arquitetura	Organizar projetos grandes
+
+
+
+ 
